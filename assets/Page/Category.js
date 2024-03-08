@@ -73,7 +73,7 @@ const Category = () => {
                 </View>
             </View>
 
-            <TouchableOpacity style={styles.restaurent}>
+            <TouchableOpacity onPress={()=>navigate.navigate('Restaurant')} style={styles.restaurent}>
                 <View style={{ alignItems: 'center' }}>
                     <Image style={{ width: 300, height: 150 }} source={require('../Image/burger1.png')} />
                 </View>

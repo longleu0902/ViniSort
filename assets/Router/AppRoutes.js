@@ -7,7 +7,12 @@ import Category from '../Page/Category';
 import Search from '../Page/Search';
 import Detail from '../Page/Detail';
 import Cart from '../Page/Cart';
-
+import Restaurant from '../Page/RestaurantDetail';
+import Payment from '../Page/Payment';
+import AddCard from '../Page/AddCard';
+import PaymentSuccess from '../Page/PaymentSuccess';
+import Tracker from '../Page/Tracker';
+import TrackerOder from '../Page/TrackerOder';
 
 
 const Stack = createNativeStackNavigator();
@@ -25,6 +30,18 @@ const AppRouter = () => {
             <Stack.Screen name="Category" component={Category} />
             <Stack.Screen name="Detail" component={Detail} />
             <Stack.Screen name="Cart" component={Cart} />
+            <Stack.Screen name="Restaurant" component={Restaurant} />
+            <Stack.Screen name="Payment" component={Payment} />
+            <Stack.Screen name="AddCard" component={AddCard} />
+            <Stack.Screen name="PaymentSuccess" component={PaymentSuccess} />
+            <Stack.Screen name="Tracker" component={Tracker} />
+            <Stack.Screen name="TrackerOder" component={TrackerOder} />
+
+            
+
+
+
+
 
 
 

@@ -2,14 +2,17 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, ScrollView,
 import { Button } from '@rneui/base';
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { CartStore } from '../Redux/CartReducer';
+import { uid } from 'uid';
 
 
 const Detail = ({ route }) => {
     const navigate = useNavigation();
     const { data } = route.params;
     const dispath = useDispatch();
+    const cart = useSelector(state => state.cartReducer.CartStore);
+
     // console.log(data);
 
     const [favouriter, setFavouriter] = useState(false);
@@ -17,13 +20,27 @@ const Detail = ({ route }) => {
     const [price, setPrice] = useState(data.price);
 
     const handleMoveCart = () => {
+        const filterSize = checkBtn.filter((item => item.status == true));
+        const _cart = [...cart];
+        const idxCart = _cart.findIndex((item) => item.id == data.id && item.size == filterSize[0]?.size );
+        // console.log(idxCart)
+        // console.log(data.id)
         const arr = {
-            name : data.name ,
-            img : data.img,
-            price : +price ,
-            amount : +amount
+            id : data.id,
+            name: data.name,
+            img: data.img,
+            price: data.price,
+            amount: +amount,
+            size: filterSize && filterSize.length > 0 ? filterSize[0].size : "10",
         }
-        dispath(CartStore(arr))
+        if (idxCart == -1) {
+            _cart.push(arr)
+            // dispath(CartStore(arr))
+
+        } else {
+            _cart[idxCart] = { ..._cart[idxCart],...arr, amount: _cart[idxCart].amount + amount }
+        }
+        dispath(CartStore([..._cart]))
         navigate.navigate('Cart');
 
     }
@@ -52,6 +69,7 @@ const Detail = ({ route }) => {
         arr[index]['status'] = true;
         setCheckBtn(arr)
     }
+    // console.log("check btn" , checkBtn)
 
     const handleIncrement = () => {
         let a = amount + 1

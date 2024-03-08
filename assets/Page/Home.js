@@ -8,10 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 
 
 const Home = () => {
-    const test = useSelector(state => state.themeColor.colorText);
-    // console.log("check store" , test)
-
-    console.log("Home");
+    const cart = useSelector(state => state.cartReducer.CartStore);
     const navigate = useNavigation();
 
 
@@ -19,9 +16,9 @@ const Home = () => {
         <View style={styles.container}>
             <View style={styles.header}>
                 <View style={styles.headerLeft}>
-                    <View style={styles.menu}>
+                    <TouchableOpacity onPress={()=> navigate.navigate('Tracker')} style={styles.menu}>
                         <Image source={require('../Icon/Menu.png')} />
-                    </View>
+                    </TouchableOpacity>
                     <View style={styles.headerContent}>
                         <Text style={{ color: '#FC6E2A', fontWeight: 700, fontSize: 14 }}>Deliver to</Text>
                         <View style={{ flexDirection: 'row' }} >
@@ -37,13 +34,11 @@ const Home = () => {
                     <View style={styles.cart}>
                         <Image source={require('../Icon/Cart.png')} />
                         <View style={styles.count}>
-                            <Text style={{ color: '#fff', fontWeight: 700 }}>3</Text>
+                            <Text style={{ color: '#fff', fontWeight: 700 }}>{cart.length}</Text>
                         </View>
                     </View>
 
                 </TouchableOpacity>
-
-
             </View>
 
             <View style={styles.search}>

@@ -3,18 +3,21 @@ import { Button } from '@rneui/base';
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { CartStore } from '../Redux/CartReducer';
+
 
 
 const Cart = () => {
     const navigate = useNavigation();
     const [total, setToltal] = useState(0)
     const cart = useSelector(state => state.cartReducer.CartStore);
-    console.log("check cart", cart);
+    // console.log("check cart", cart);
+    const dispath = useDispatch();
 
     const getTotal = () => {
         const _cart = [...cart];
         let toltal = _cart.reduce((a, b) => {
-            return Number(a) + Number(b.price)
+            return Number(a) + Number(b.price) * Number(b.amount)
         }, 0)
         setToltal(toltal)
 
@@ -22,7 +25,38 @@ const Cart = () => {
     useEffect(() => {
         getTotal();
 
-    }, [cart])
+    }, [cart]);
+
+    const handleDecrement = (id, size) => {
+        const _cartList = [...cart]
+        const Idx = _cartList.findIndex(item => item.id == id && item.size == size)
+        _cartList[Idx] = { ..._cartList[Idx], amount: _cartList[Idx].amount - 1 }
+
+        if (_cartList[Idx].amount == 0) {
+            _cartList[Idx].amount = 1
+        }
+        // console.log("check cartlist" , _cartList)
+        dispath(CartStore(_cartList));
+    }
+
+    const handleIncrement = (id , size) => {
+        const _cartList = [...cart]
+        const Idx = _cartList.findIndex(item => item.id == id && item.size == size)
+        _cartList[Idx] = { ..._cartList[Idx], amount: _cartList[Idx].amount + 1 }
+
+        if (_cartList[Idx].amount == 0) {
+            _cartList[Idx].amount = 1
+        }
+        // console.log("check cartlist" , _cartList)
+        dispath(CartStore(_cartList));
+    }
+
+    const removeItem = (product) => {
+        const _cartList = [...cart];
+        const remove = _cartList.filter(item => item.id != product.id || item.size !== product.size);
+        dispath(CartStore(remove));
+
+    }
 
 
     return (
@@ -48,21 +82,24 @@ const Cart = () => {
                                 <View style={styles.info}>
                                     <View style={{ gap: 10 }}>
                                         <Text style={{ fontSize: 16, width: 120 }}>{item.name}</Text>
-                                        <Text style={{ fontWeight: 700, fontSize: 20 }}>${item.price}</Text>
+                                        <Text style={{ fontWeight: 700, fontSize: 20 }}>${item.price * item.amount}</Text>
+                                        <Text style={{ fontSize: 16 }}>Size : {item.size}</Text>
                                     </View>
-                                    <Image source={require('../Icon/remove.png')} />
+                                    <TouchableOpacity onPress={() => removeItem(item)}>
+                                        <Image source={require('../Icon/remove.png')} />
+                                    </TouchableOpacity>
                                 </View>
                                 <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
                                     <View style={styles.count}>
                                         <Button
-                                            // onPress={handleDecrement}
+                                            onPress={() => handleDecrement(item.id, item.size)}
                                             titleStyle={{ lineHeight: 17, color: '#000', fontWeight: 700 }}
                                             color='#fff'>
                                             -
                                         </Button>
                                         <Text style={{ color: '#000', fontWeight: 700 }}>{item.amount}</Text>
                                         <Button
-                                            // onPress={handleIncrement}
+                                            onPress={() => handleIncrement(item.id, item.size)}
                                             titleStyle={{ lineHeight: 17, color: '#000', fontWeight: 700 }}
                                             color='#fff'>
                                             +
@@ -101,7 +138,7 @@ const Cart = () => {
                 </View>
 
                 <Button
-                    // onPress={handleMoveCart}
+                    onPress={()=>navigate.navigate('Payment',{total : total})}
                     buttonStyle={
                         {
                             height: 60,
