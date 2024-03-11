@@ -13,6 +13,8 @@ import AddCard from '../Page/AddCard';
 import PaymentSuccess from '../Page/PaymentSuccess';
 import Tracker from '../Page/Tracker';
 import TrackerOder from '../Page/TrackerOder';
+import CallScreen from '../Page/CallScreen';
+import MyOders from '../Page/MyOder';
 
 
 const Stack = createNativeStackNavigator();
@@ -36,6 +38,11 @@ const AppRouter = () => {
             <Stack.Screen name="PaymentSuccess" component={PaymentSuccess} />
             <Stack.Screen name="Tracker" component={Tracker} />
             <Stack.Screen name="TrackerOder" component={TrackerOder} />
+            <Stack.Screen name="CallScreen" component={CallScreen} />
+            <Stack.Screen name="MyOders" component={MyOders} />
+
+            
+
 
             
 

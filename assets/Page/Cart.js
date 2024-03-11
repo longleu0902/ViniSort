@@ -130,7 +130,7 @@ const Cart = () => {
                     <Text style={{ fontSize: 14, color: '#A0A5BA' }}>Total:
                         <Text style={{ fontSize: 25, color: "#000" }}>  ${total}</Text>
                     </Text>
-                    <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <TouchableOpacity onPress={()=> navigate.navigate('MyOders')} style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Text style={{ color: '#FF7622', paddingRight: 10 }}
                         >Breakdown</Text>
                         <Image source={require('../Icon/Vector.png')} />
@@ -174,7 +174,8 @@ const styles = StyleSheet.create({
     headerLeft: {
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 10
+        gap: 10,
+        
     },
     menu: {
         width: 45,
