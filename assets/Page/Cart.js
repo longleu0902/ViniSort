@@ -76,7 +76,7 @@ const Cart = () => {
                     {cart.map((item, index) => (
                         <View key={index} style={styles.body}>
                             <View style={styles.img}>
-                                <Image style={{ width: 110, height: 100 }} source={item.img} />
+                                <Image style={{ width: 110, height: 100 }} source={{ uri :item.img}} />
                             </View>
                             <View style={styles.infomation}>
                                 <View style={styles.info}>

@@ -1,42 +1,41 @@
-import { StyleSheet, Text, View, Image, ScrollView,TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 const Category = () => {
 
 
-    console.log("Category");
+    const list = useSelector(state => state.productReducer.listStore);
     const navigate = useNavigation();
     const handleClickProduct = (Data) => {
-        navigate.navigate('Detail',{data : Data})
-
+        navigate.navigate('Detail', { data: Data })
     }
 
-    const list = [
-        {
-            id: 1,
-            img: require('../Image/pizza.png'),
-            name: 'Pizza',
-            status: 'Starting',
-            price: '70'
+    // const list = [   
+    //     {
+    //         id: 1,
+    //         img: require('../Image/pizza.png'),
+    //         name: 'Pizza',
+    //         status: 'Starting',
+    //         price: '70'
 
-        },
-        {
-            id: 2,
-            img: require('../Image/burger.png'),
-            name: 'Burger',
-            status: 'Starting',
-            price: '50'
+    //     },
+    //     {
+    //         id: 2,
+    //         img: require('../Image/burger.png'),
+    //         name: 'Burger',
+    //         status: 'Starting',
+    //         price: '50'
 
-        },
-        {
-            id: 3,
-            img: require('../Image/pizza.png'),
-            name: 'Pizza',
-            status: 'Starting',
-            price: '70'
+    //     },
+    //     {
+    //         id: 3,
+    //         img: require('../Image/pizza.png'),
+    //         name: 'Pizza',
+    //         status: 'Starting',
+    //         price: '70'
 
-        },
-    ]
+    //     },
+    // ]
 
 
     return (
@@ -51,9 +50,9 @@ const Category = () => {
 
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scrollView}>
                 {list.map((item, index) => (
-                    <TouchableOpacity onPress={()=>handleClickProduct(item)} key={index} style={styles.listCategory}>
+                    <TouchableOpacity onPress={() => handleClickProduct(item)} key={index} style={styles.listCategory}>
                         <View style={styles.img}>
-                            <Image style={{ width: 120, height: 120 }} source={item.img} />
+                            <Image style={{ width: 120, height: 120 }} source={{ uri: item.img }} />
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 15 }}>
                             <Text>{item.status}</Text>
@@ -73,7 +72,7 @@ const Category = () => {
                 </View>
             </View>
 
-            <TouchableOpacity onPress={()=>navigate.navigate('Restaurant')} style={styles.restaurent}>
+            <TouchableOpacity onPress={() => navigate.navigate('Restaurant')} style={styles.restaurent}>
                 <View style={{ alignItems: 'center' }}>
                     <Image style={{ width: 300, height: 150 }} source={require('../Image/burger1.png')} />
                 </View>

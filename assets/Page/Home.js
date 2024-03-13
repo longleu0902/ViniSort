@@ -16,7 +16,7 @@ const Home = () => {
         <View style={styles.container}>
             <View style={styles.header}>
                 <View style={styles.headerLeft}>
-                    <TouchableOpacity onPress={()=> navigate.navigate('Tracker')} style={styles.menu}>
+                    <TouchableOpacity onPress={()=> navigate.navigate('Profile')} style={styles.menu}>
                         <Image source={require('../Icon/Menu.png')} />
                     </TouchableOpacity>
                     <View style={styles.headerContent}>

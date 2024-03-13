@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, ScrollView, SafeAreaView } from 'react-native';
 import { Button } from '@rneui/base';
 import { useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CartStore } from '../Redux/CartReducer';
 import { uid } from 'uid';
@@ -9,9 +9,18 @@ import { uid } from 'uid';
 
 const Detail = ({ route }) => {
     const navigate = useNavigation();
+    // const [data , setData] = useState('')
     const { data } = route.params;
+
+    // useEffect(()=> {
+    //     setData(dataDetail);
+    // },[])
+
+    console.log("check data", data)
+
+
     const dispath = useDispatch();
-    const cart = useSelector(state => state.cartReducer.CartStore);
+    const cart = useSelector(state => state.cartReducer.CartStore); /// thay doi store
 
     // console.log(data);
 
@@ -22,11 +31,11 @@ const Detail = ({ route }) => {
     const handleMoveCart = () => {
         const filterSize = checkBtn.filter((item => item.status == true));
         const _cart = [...cart];
-        const idxCart = _cart.findIndex((item) => item.id == data.id && item.size == filterSize[0]?.size );
+        const idxCart = _cart.findIndex((item) => item.id == data.id && item.size == filterSize[0]?.size);
         // console.log(idxCart)
         // console.log(data.id)
         const arr = {
-            id : data.id,
+            id: data.id,
             name: data.name,
             img: data.img,
             price: data.price,
@@ -38,7 +47,7 @@ const Detail = ({ route }) => {
             // dispath(CartStore(arr))
 
         } else {
-            _cart[idxCart] = { ..._cart[idxCart],...arr, amount: _cart[idxCart].amount + amount }
+            _cart[idxCart] = { ..._cart[idxCart], ...arr, amount: _cart[idxCart].amount + amount }
         }
         dispath(CartStore([..._cart]))
         navigate.navigate('Cart');
@@ -88,9 +97,8 @@ const Detail = ({ route }) => {
 
             <View style={styles.header}>
                 <View style={styles.headerLeft}>
-
                     <View style={styles.image}>
-                        <Image source={data.img} />
+                        <Image source={{ uri: data.img }} />
                         <TouchableOpacity onPress={() => navigate.navigate('Home')} style={styles.menu}>
                             <Image source={require('../Icon/Back.png')} />
                         </TouchableOpacity>
@@ -107,9 +115,6 @@ const Detail = ({ route }) => {
 
             <ScrollView showsVerticalScrollIndicator={false} style={styles.body}>
                 <View style={{ gap: 25 }}>
-                    {/* <View style={styles.image}>
-                        <Image source={data.img} />
-                    </View> */}
                     <View style={styles.address}>
                         <Image source={require('../Icon/logo.png')}></Image>
                         <Text>Restaurant</Text>
