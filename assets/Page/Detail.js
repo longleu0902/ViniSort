@@ -9,14 +9,14 @@ import { uid } from 'uid';
 
 const Detail = ({ route }) => {
     const navigate = useNavigation();
-    // const [data , setData] = useState('')
+    // const [data , setData] = useState({})
     const { data } = route.params;
 
     // useEffect(()=> {
     //     setData(dataDetail);
     // },[])
 
-    console.log("check data", data)
+    // console.log("check data", data)
 
 
     const dispath = useDispatch();
@@ -36,7 +36,7 @@ const Detail = ({ route }) => {
         // console.log(data.id)
         const arr = {
             id: data.id,
-            name: data.name,
+            name: data?.name,
             img: data.img,
             price: data.price,
             amount: +amount,
@@ -98,7 +98,7 @@ const Detail = ({ route }) => {
             <View style={styles.header}>
                 <View style={styles.headerLeft}>
                     <View style={styles.image}>
-                        <Image source={{ uri: data.img }} />
+                        <Image style={{ width: 150, height: 150 }} source={{ uri: data.img }} />
                         <TouchableOpacity onPress={() => navigate.navigate('Home')} style={styles.menu}>
                             <Image source={require('../Icon/Back.png')} />
                         </TouchableOpacity>
@@ -120,7 +120,7 @@ const Detail = ({ route }) => {
                         <Text>Restaurant</Text>
                     </View>
                     <View style={styles.introduction}>
-                        <Text style={{ fontSize: 20, fontWeight: 700 }}>{data.name}</Text>
+                        <Text style={{ fontSize: 20, fontWeight: 700 }}>{data?.name}</Text>
                         <Text style={{ fontSize: 14, color: '#A0A5BA' }}>Prosciutto e funghi is a pizza variety that is topped with tomato sauce.</Text>
                         <View style={{ flexDirection: 'row', gap: 50 }}>
                             <View style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}>
@@ -165,7 +165,6 @@ const Detail = ({ route }) => {
                 </View>
 
             </ScrollView>
-
             <View style={styles.addToCart}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <Text style={{ fontSize: 28 }}>${price}</Text>

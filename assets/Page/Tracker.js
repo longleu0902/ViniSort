@@ -8,24 +8,25 @@ const Tracker = () => {
     const navigate = useNavigation();
 
     return (
-        <View style={styles.container}>
-            <View style={styles.img}>
-                <Image style={{ width: '100%' }} source={require('../Image/Tracker.png')} />
-            </View>
-            <View style={styles.title}>
-                <Text style={{ fontSize: 30 }}>TRACK YOUR ORDER</Text>
-                <Text style={{ fontSize: 15, color: '#646982' }}>Enter your tracking number below</Text>
-            </View>
-            <View style={styles.formStyle}>
-                <TextInput placeholder='Tracking number' />
-            </View>
+        <ScrollView showsVerticalScrollIndicator={false}>
 
-            <Button
-                onPress={()=> navigate.navigate('TrackerOder')}
-                buttonStyle={{ borderRadius: 12, paddingVertical: 23 , marginHorizontal:20 }}
-                color="#FF7622">PAY & CONFIRM</Button>
-
-        </View>
+            <View style={styles.container}>
+                <View style={styles.img}>
+                    <Image style={{ width: '100%' }} source={require('../Image/Tracker.png')} />
+                </View>
+                <View style={styles.title}>
+                    <Text style={{ fontSize: 30 }}>TRACK YOUR ORDER</Text>
+                    <Text style={{ fontSize: 15, color: '#646982' }}>Enter your tracking number below</Text>
+                </View>
+                <View style={styles.formStyle}>
+                    <TextInput placeholder='Tracking number' />
+                </View>
+                <Button
+                    onPress={() => navigate.navigate('TrackerOder')}
+                    buttonStyle={{ borderRadius: 12, paddingVertical: 23, marginHorizontal: 20 }}
+                    color="#FF7622">PAY & CONFIRM</Button>
+            </View>
+        </ScrollView>
     )
 
 

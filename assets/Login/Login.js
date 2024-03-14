@@ -13,11 +13,8 @@ import { listStore } from '../Redux/productReducer';
 
 
 
-
-
 const Login = () => {
     const dispath = useDispatch();
-
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 

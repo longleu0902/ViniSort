@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image , TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Button } from '@rneui/base';
 import Category from './Category';
@@ -16,7 +16,7 @@ const Home = () => {
         <View style={styles.container}>
             <View style={styles.header}>
                 <View style={styles.headerLeft}>
-                    <TouchableOpacity onPress={()=> navigate.navigate('Profile')} style={styles.menu}>
+                    <TouchableOpacity onPress={() => navigate.navigate('Profile')} style={styles.menu}>
                         <Image source={require('../Icon/Menu.png')} />
                     </TouchableOpacity>
                     <View style={styles.headerContent}>
@@ -30,7 +30,7 @@ const Home = () => {
                     </View>
 
                 </View>
-                <TouchableOpacity onPress={()=> navigate.navigate('Cart')} style={styles.headerRight}>
+                <TouchableOpacity onPress={() => navigate.navigate('Cart')} style={styles.headerRight}>
                     <View style={styles.cart}>
                         <Image source={require('../Icon/Cart.png')} />
                         <View style={styles.count}>
@@ -59,10 +59,12 @@ const Home = () => {
                     <Text style={{ fontSize: 14, color: '#676767' }}>What will you like to eat?</Text>
                 </Button>
             </View>
+            <ScrollView>
+                <View style={styles.category}>
+                    <Category />
+                </View>
+            </ScrollView>
 
-            <View style={styles.category}>
-                <Category />
-            </View>
         </View>
     )
 }

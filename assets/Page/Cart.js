@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     },
     img: {
         backgroundColor: '#ccc',
-        width: '48%',
+        width: '46%',
         borderRadius: 20,
         alignItems: 'center',
         paddingVertical: 10

@@ -54,17 +54,22 @@ const Profile = () => {
         },
     ]
 
-    const handleClick = (item) => {
-        if(item == 'Log Out'){
-            const arr = {
-                // username : '',
-                // token : '',
-                // isAuthentication : false
-
-            };
+    const handleClick = (id) => {
+        if (id == 2) {
+            const arr = {};
             dispath(setLogin(arr));
         }
 
+    }
+
+    const handleOption = (id) => {
+        if (id == 2) {
+            navigate.navigate('Tracker')
+        }
+        if (id == 3) {
+            navigate.navigate('MyOders')
+        }
+      
     }
 
     return (
@@ -104,8 +109,8 @@ const Profile = () => {
 
                     <View style={{ borderRadius: 20, backgroundColor: '#F0F5FA', marginBottom: 20 }}>
                         {Option.map((item, index) => (
-                            <TouchableOpacity key={index} style={styles.Item}>
-                                <View style={{ flexDirection: 'row', gap: 20 , alignItems : 'center'}}>
+                            <TouchableOpacity onPress={() => handleOption(item.id)} key={index} style={styles.Item}>
+                                <View style={{ flexDirection: 'row', gap: 20, alignItems: 'center' }}>
                                     <Image source={item.img} />
                                     <Text style={{ fontSize: 20 }}>{item.description}</Text>
 
@@ -119,8 +124,8 @@ const Profile = () => {
                     <View style={{ borderRadius: 20, backgroundColor: '#F0F5FA', marginBottom: 20 }}>
 
                         {list.map((item, index) => (
-                            <TouchableOpacity onPress={()=>handleClick(item.description)} key={index} style={[styles.Item]}>
-                                <View style={{ flexDirection: 'row', gap: 20 , alignItems :'center'}}>
+                            <TouchableOpacity onPress={() => handleClick(item.id)} key={index} style={[styles.Item]}>
+                                <View style={{ flexDirection: 'row', gap: 20, alignItems: 'center' }}>
                                     <Image source={item.img} />
                                     <Text style={{ fontSize: 20 }}>{item.description}</Text>
 

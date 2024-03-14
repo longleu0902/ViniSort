@@ -87,7 +87,7 @@ const OdersList = (props) => {
             <View style={styles.container}>
 
                 {list.map((product, index) => (
-                    <>
+                    <View key={index} style={styles.container}>
                         <View style={styles.title}>
                             <Text style={{ fontSize: 14 }}>{product.category}</Text>
                             {indexProps == 1 && <Text style={{ color: product.status == 'Completed' ? '#059C6A' : 'red', fontSize: 14 }}>{product?.status}</Text>}
@@ -108,18 +108,18 @@ const OdersList = (props) => {
                         <View style={{ flexDirection: indexProps == 0 ? 'row' : 'row-reverse', justifyContent: 'space-between' }}>
                             <Button
                                 onPress={() => navigate.navigate('TrackerOder')}
-                                buttonStyle={{ borderRadius: 5, paddingVertical: 15, width: 170 }}
+                                buttonStyle={{ borderRadius: 5, paddingVertical: 15 , width:150 }}
                                 color="#FF7622">{indexProps == 0 ? 'Track oders' : 'Re-Order'}
                             </Button>
                             <Button
                                 titleStyle={{ color: '#FF7622' }}
-                                buttonStyle={{ borderRadius: 5, paddingVertical: 15, width: 170, borderWidth: 2, borderColor: '#FF7622' }}
+                                buttonStyle={{ borderRadius: 5, paddingVertical: 15, width:150, borderWidth: 2, borderColor: '#FF7622' }}
                                 color="#fff">{indexProps == 0 ? 'Cancel' : 'Rate'}
                             </Button>
                         </View>
 
 
-                    </>
+                    </View>
                 ))}
 
 
