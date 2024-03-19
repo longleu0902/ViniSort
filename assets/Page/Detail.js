@@ -5,18 +5,51 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CartStore } from '../Redux/CartReducer';
 import { uid } from 'uid';
+import Animated, { useSharedValue, withSpring, useAnimatedStyle, withTiming, Easing,withRepeat } from 'react-native-reanimated';
+
 
 
 const Detail = ({ route }) => {
     const navigate = useNavigation();
     // const [data , setData] = useState({})
     const { data } = route.params;
+    const translateY = useSharedValue(0);
+    const translateX = useSharedValue(0);
+    const rotate = useSharedValue(0);
 
-    // useEffect(()=> {
-    //     setData(dataDetail);
-    // },[])
+    const [opacityShow, setOpacityShow] = useState(false)
 
-    // console.log("check data", data)
+    const animatedStyles = useAnimatedStyle(() => ({
+        transform: [
+            {
+                translateY: withSpring(translateY.value, {
+                    mass: 1,
+                    damping: 14,
+                    stiffness: 18,
+                    overshootClamping: false,
+                    restDisplacementThreshold: 0.01,
+                    restSpeedThreshold: 0.01,
+                }
+
+                )
+            },
+            {
+                translateX: withSpring(translateX.value,
+                    {
+                        mass: 1,
+                        damping: 14,
+                        stiffness: 10,
+                        overshootClamping: false,
+                        restDisplacementThreshold: 0.01,
+                        restSpeedThreshold: 0.01,
+                    })
+            },
+            { rotate: `${rotate.value*360}deg` },
+
+        ],
+    }
+    ))
+
 
 
     const dispath = useDispatch();
@@ -29,6 +62,21 @@ const Detail = ({ route }) => {
     const [price, setPrice] = useState(data.price);
 
     const handleMoveCart = () => {
+        const duration = 2000
+        const easing = Easing.bezier(0.25, -0.5, 0.25, 1);
+        setOpacityShow(true);
+        rotate.value = withRepeat(withTiming(1, { duration, easing }), -1);
+        translateX.value = 300;
+        translateY.value = -250;
+
+        setTimeout(() => {
+            setOpacityShow(false)
+            translateX.value = 0;
+            translateY.value = 0;
+        }, 1700)
+
+
+        setTimeout(()=>{
         const filterSize = checkBtn.filter((item => item.status == true));
         const _cart = [...cart];
         const idxCart = _cart.findIndex((item) => item.id == data.id && item.size == filterSize[0]?.size);
@@ -51,6 +99,8 @@ const Detail = ({ route }) => {
         }
         dispath(CartStore([..._cart]))
         navigate.navigate('Cart');
+
+        },1900)
 
     }
 
@@ -109,6 +159,9 @@ const Detail = ({ route }) => {
                             ]}>
                             <Image source={require('../Icon/favouriter.png')} />
                         </TouchableOpacity>
+                        <Animated.View style={[styles.imgAnimated, animatedStyles, { opacity: opacityShow ? 0.6 : 0 }]}>
+                            <Image style={{ width: 50, height: 50 }} source={{ uri: data.img }} />
+                        </Animated.View>
                     </View>
                 </View>
             </View>
@@ -296,6 +349,18 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         borderRadius: 50,
         alignItems: 'center'
+    },
+    imgAnimated: {
+        position: 'absolute',
+        // top : 0,
+        left: 30,
+        bottom: 0,
+        backgroundColor: '#ccc',
+        height: 70,
+        width: 70,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius : 10
     }
 })
 export default Detail;
