@@ -1,13 +1,23 @@
 import { Button } from '@rneui/base';
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, ScrollView, TouchableWithoutFeedback, Keyboard, ImageBackground } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 
 const OdersList = (props) => {
 
+    const navigate = useNavigation()
+
     const indexProps = props.index
 
     const [list, setList] = useState([]);
+
+    const handleClick = (product) => {
+
+        console.log("check product" , product)
+        navigate.navigate("TrackerOder",{data : product})
+
+    }
 
 
 
@@ -107,7 +117,7 @@ const OdersList = (props) => {
                         </View>
                         <View style={{ flexDirection: indexProps == 0 ? 'row' : 'row-reverse', justifyContent: 'space-between' }}>
                             <Button
-                                onPress={() => navigate.navigate('TrackerOder')}
+                                onPress={() => handleClick(product)}
                                 buttonStyle={{ borderRadius: 5, paddingVertical: 15 , width:150 }}
                                 color="#FF7622">{indexProps == 0 ? 'Track oders' : 'Re-Order'}
                             </Button>

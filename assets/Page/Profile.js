@@ -2,9 +2,19 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, ScrollView,
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { setLogin } from '../Redux/LoginReducer';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Camera, CameraType } from 'expo-camera';
+import * as ImagePicker from 'expo-image-picker';
+import { ref, child, getDownloadURL, uploadBytes, onValue } from "firebase/storage";
+import { storage } from '../config/firebaseConfig';
+import { Button } from '@rneui/base';
+import { uid } from 'uid';
+import { fethData, UpdateData, fethDataValue } from '../service/getDataUser';
+
+
 
 const Profile = () => {
+    const user = useSelector(state => state.LoginReducer.payload.username)
     const navigate = useNavigation();
     const dispath = useDispatch();
 
@@ -69,8 +79,53 @@ const Profile = () => {
         if (id == 3) {
             navigate.navigate('MyOders')
         }
-      
+
     }
+
+    const getImage = async () => {
+        const data = await fethDataValue(user)
+        if (data.img) {
+            setImage(data.img)
+        }
+
+
+    }
+
+
+    useEffect(() => {
+        getImage();
+    }, [])
+
+    //test camera
+    const [image, setImage] = useState(null);
+    const [btnSave, setBtnSave] = useState(false)
+
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+        if (!result.canceled) {
+            setImage(result.assets[0].uri);
+            setBtnSave(true)
+        }
+    }
+    const handleUpload = async () => {
+        const storageRef = ref(storage, `img/${uid()}`);
+        const response = await fetch(image);
+        const blob = await response.blob();
+        await uploadBytes(storageRef, blob)
+        const photoURL = await getDownloadURL(storageRef)
+        console.log('link', photoURL);
+        const data = await fethData(user);
+        await UpdateData(data, { img: photoURL })
+        setBtnSave(false)
+
+    }
+
 
     return (
         <View style={styles.container}>
@@ -83,8 +138,8 @@ const Profile = () => {
                     <View style={styles.headerContent}>
                         <Text style={{ color: '#1A1817', fontWeight: 500, fontSize: 20 }}>Menu Profile</Text>
                     </View>
-
                 </View>
+
                 <View style={styles.headerRight}>
                     <TouchableOpacity style={styles.menu}>
                         <Text>...</Text>
@@ -92,18 +147,34 @@ const Profile = () => {
 
                 </View>
 
-
             </View>
 
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.body}>
 
                     <View style={{ gap: 10, flexDirection: 'row', alignItems: 'center', gap: 20 }}>
-                        <Image style={{ width: 100, height: 100 }} source={require('../Icon/Profile.png')} />
+                        {!image && <TouchableOpacity style={styles.avatar} onPress={pickImage}>
+                            <Text style={{ fontSize: 20, color: '#fff' }}>+</Text>
+                        </TouchableOpacity>}
+
+                        {image &&
+                            <TouchableOpacity onPress={pickImage}>
+                                <Image source={{ uri: image }}
+                                    style={{ width: 100, height: 100, borderRadius: 50 }}
+                                />
+                            </TouchableOpacity>
+                        }
                         <View style={{ gap: 10 }}>
-                            <Text style={{ fontSize: 20 }}>Septa</Text>
+                            <Text style={{ fontSize: 20 }}>{user}</Text>
                             <Text style={{ fontSize: 14, color: '#ccc' }}>I love fast food</Text>
                         </View>
+                    </View>
+
+                    {btnSave &&
+                        <Button onPress={() => handleUpload()} buttonStyle={{ borderRadius: 10, paddingVertical: 15 }}>Save</Button>
+                    }
+
+                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                     </View>
 
 
@@ -189,6 +260,14 @@ const styles = StyleSheet.create({
     },
     body: {
         gap: 20
+    },
+    avatar: {
+        backgroundColor: '#ccc',
+        width: 100,
+        height: 100,
+        borderRadius: 50,
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 })
 export default Profile;

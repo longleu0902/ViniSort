@@ -3,14 +3,16 @@ import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { GestureDetector, Gesture } from 'react-native-gesture-handler';
 import { PanGestureHandler, GestureHandlerRootView } from 'react-native-gesture-handler';
-import Animated, { useSharedValue, withSpring, useAnimatedStyle ,withTiming} from 'react-native-reanimated';
+import Animated, { useSharedValue, withSpring, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 
 
 
-const TrackerOder = () => {
+const TrackerOder = ({ route }) => {
     const navigate = useNavigation();
     const translateY = useSharedValue(400);
+
+    const { data } = route.params;
 
     const [showBorder, setShowBoder] = useState(false);
 
@@ -98,10 +100,10 @@ const TrackerOder = () => {
                 </View>
                 <View style={styles.info}>
                     <View style={{ height: 65, width: 65 }}>
-                        <Image source={require("../Image/Restuarant Image.png")} />
+                        <Image style={{ height: 65, width: 65 }} source={data?.img} />
                     </View>
                     <View style={styles.infomation}>
-                        <Text style={{ fontSize: 20 }}>Uttora Coffee House</Text>
+                        <Text style={{ fontSize: 20 }}>{data?.name}</Text>
                         <Text style={{ fontSize: 15, color: '#ccc' }}>Orderd at 06 Sept, 10:00pm</Text>
                         <Text style={{ fontSize: 13 }}>2x Burger</Text>
                         <Text style={{ fontSize: 13 }}>4x Sanwitch</Text>
@@ -152,7 +154,7 @@ const TrackerOder = () => {
                 </View>
 
                 <View style={{ gap: 20, flexDirection: 'row' }}>
-                    <TouchableOpacity onPress={() => navigate.navigate('CallScreen')} style={{ width: 50, height: 85, alignItems: 'center' }}>
+                    <TouchableOpacity onPress={() => navigate.navigate('CallScreen',{data : data})} style={{ width: 50, height: 85, alignItems: 'center' }}>
                         <Image source={require('../Icon/Call.png')} />
                     </TouchableOpacity>
                     <View style={{ marginTop: 17, width: 50, height: 50 }}>

@@ -5,6 +5,7 @@ const initialState = {
         username: '',
         token: "",
         isAuthentication: false,
+        img : ''
     }
 }
 

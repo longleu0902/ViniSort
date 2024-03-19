@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 
 
 const Home = () => {
-    const cart = useSelector(state => state.cartReducer.CartStore);
+    const cart = useSelector((state) => state.cartReducer.CartStore);
     const navigate = useNavigation();
 
 
@@ -20,7 +20,7 @@ const Home = () => {
                         <Image source={require('../Icon/Menu.png')} />
                     </TouchableOpacity>
                     <View style={styles.headerContent}>
-                        <Text style={{ color: '#FC6E2A', fontWeight: 700, fontSize: 14 }}>Deliver to</Text>
+                        <Text style={{ color: '#FC6E2A', fontWeight: "700", fontSize: 14 }}>Deliver to</Text>
                         <View style={{ flexDirection: 'row' }} >
                             <Text style={{ fontSize: 15, color: '#676767' }}>Los Angeles, USA</Text>
                             <View style={{ flexDirection: 'column', justifyContent: 'flex-end', marginLeft: 5, marginBottom: 5 }}>
@@ -34,7 +34,7 @@ const Home = () => {
                     <View style={styles.cart}>
                         <Image source={require('../Icon/Cart.png')} />
                         <View style={styles.count}>
-                            <Text style={{ color: '#fff', fontWeight: 700 }}>{cart.length}</Text>
+                            <Text style={{ color: '#fff', fontWeight: "700" }}>{cart.length}</Text>
                         </View>
                     </View>
 
@@ -42,7 +42,7 @@ const Home = () => {
             </View>
 
             <View style={styles.search}>
-                <Text>Hey Septa,<Text style={{ fontWeight: '700' }}>Good Afternoon!</Text></Text>
+                <Text>Hey Septa,<Text style={{ fontWeight: "700" }}>Good Afternoon!</Text></Text>
                 <Button
                     onPress={() => navigate.navigate('Search')}
                     buttonStyle={{
@@ -126,6 +126,12 @@ const styles = StyleSheet.create({
     },
     search: {
         gap: 10
+    },
+    headerRight: {
+
+    },
+    category: {
+
     }
 })
 export default Home;

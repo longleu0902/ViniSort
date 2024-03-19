@@ -22,7 +22,7 @@ const Tracker = () => {
                     <TextInput placeholder='Tracking number' />
                 </View>
                 <Button
-                    onPress={() => navigate.navigate('TrackerOder')}
+                    onPress={() => navigate.navigate('TrackerOder',{data : 'abc'})}
                     buttonStyle={{ borderRadius: 12, paddingVertical: 23, marginHorizontal: 20 }}
                     color="#FF7622">PAY & CONFIRM</Button>
             </View>

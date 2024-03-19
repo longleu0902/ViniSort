@@ -8,10 +8,10 @@ import Animated, { useSharedValue, withSpring, useAnimatedStyle } from 'react-na
 
 
 
-const CallScreen = () => {
+const CallScreen = ({ route }) => {
     const navigate = useNavigation();
     const translateY = useSharedValue(300);
-
+    const { data } = route.params;
     const [renderIndex, setRenderIndex] = useState(0);
 
     useEffect(() => {
@@ -21,7 +21,7 @@ const CallScreen = () => {
 
     useEffect(() => {
         const intervalId = setTimeout(() => {
-                setRenderIndex(prev => prev + 1)
+            setRenderIndex(prev => prev + 1)
         }, 1000)
     }, [renderIndex])
 
@@ -76,7 +76,7 @@ const CallScreen = () => {
                         <TouchableOpacity style={styles.callItem}>
                             <Image source={require('../Icon/mic-off.png')} />
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={()=> navigate.navigate("TrackerOder")} style={styles.callItem}>
+                        <TouchableOpacity onPress={() => navigate.navigate("TrackerOder", { data: data })} style={styles.callItem}>
                             <Image source={require('../Icon/End Icon (1).png')} />
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.callItem}>
