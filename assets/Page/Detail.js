@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CartStore } from '../Redux/CartReducer';
 import { uid } from 'uid';
-import Animated, { useSharedValue, withSpring, useAnimatedStyle, withTiming, Easing,withRepeat } from 'react-native-reanimated';
+import Animated, { useSharedValue, withSpring, useAnimatedStyle, withTiming, Easing, withRepeat } from 'react-native-reanimated';
 
 
 
@@ -18,6 +18,7 @@ const Detail = ({ route }) => {
     const rotate = useSharedValue(0);
 
     const [opacityShow, setOpacityShow] = useState(false)
+    const [toastSize, setToastSize] = useState(false)
 
     const animatedStyles = useAnimatedStyle(() => ({
         transform: [
@@ -44,7 +45,7 @@ const Detail = ({ route }) => {
                         restSpeedThreshold: 0.01,
                     })
             },
-            { rotate: `${rotate.value*360}deg` },
+            { rotate: `${rotate.value * 60}deg` },
 
         ],
     }
@@ -62,6 +63,12 @@ const Detail = ({ route }) => {
     const [price, setPrice] = useState(data.price);
 
     const handleMoveCart = () => {
+        const filterSize = checkBtn.filter((item => item.status == true));
+        if (filterSize.length == 0) {
+            setToastSize(true)
+            return;
+        }
+
         const duration = 2000
         const easing = Easing.bezier(0.25, -0.5, 0.25, 1);
         setOpacityShow(true);
@@ -76,31 +83,37 @@ const Detail = ({ route }) => {
         }, 1700)
 
 
-        setTimeout(()=>{
-        const filterSize = checkBtn.filter((item => item.status == true));
-        const _cart = [...cart];
-        const idxCart = _cart.findIndex((item) => item.id == data.id && item.size == filterSize[0]?.size);
-        // console.log(idxCart)
-        // console.log(data.id)
-        const arr = {
-            id: data.id,
-            name: data?.name,
-            img: data.img,
-            price: data.price,
-            amount: +amount,
-            size: filterSize && filterSize.length > 0 ? filterSize[0].size : "10",
-        }
-        if (idxCart == -1) {
-            _cart.push(arr)
-            // dispath(CartStore(arr))
+        setTimeout(() => {
+            const filterSize = checkBtn.filter((item => item.status == true));
+            console.log('check filter', filterSize)
+            const _cart = [...cart];
+            const idxCart = _cart.findIndex((item) => item.id == data.id && item.size == filterSize[0]?.size);
+            // console.log(idxCart)
+            // console.log(data.id)
+            if (filterSize.length == 0) {
+                setToastSize(true)
+                return;
+            }
+            const arr = {
+                id: data.id,
+                name: data?.name,
+                img: data.img,
+                price: data.price,
+                amount: +amount,
+                size: filterSize[0]?.size || '10',
+            }
 
-        } else {
-            _cart[idxCart] = { ..._cart[idxCart], ...arr, amount: _cart[idxCart].amount + amount }
-        }
-        dispath(CartStore([..._cart]))
-        navigate.navigate('Cart');
+            if (idxCart == -1) {
+                _cart.push(arr)
+                // dispath(CartStore(arr))
 
-        },1900)
+            } else {
+                _cart[idxCart] = { ..._cart[idxCart], ...arr, amount: _cart[idxCart].amount + amount }
+            }
+            dispath(CartStore([..._cart]))
+            navigate.navigate('Cart');
+
+        }, 1900)
 
     }
 
@@ -123,6 +136,7 @@ const Detail = ({ route }) => {
     ]
     const [checkBtn, setCheckBtn] = useState(defaultBtnGroup);
     const handleClickSize = (id) => {
+        setToastSize(false)
         let arr = [...defaultBtnGroup];
         const index = checkBtn.findIndex((item) => item.id == id);
         arr[index]['status'] = true;
@@ -190,7 +204,7 @@ const Detail = ({ route }) => {
                             </View>
                         </View>
                         <View style={styles.selectSize}>
-                            <Text>SIZE:  </Text>
+                            <Text style={{color : toastSize ? 'red' : '#000'}}>SIZE:  </Text>
                             {checkBtn.map((item, index) => (
                                 <Button
                                     key={index}
@@ -204,6 +218,10 @@ const Detail = ({ route }) => {
                                     {item.size}
                                 </Button>
                             ))}
+                            {toastSize && <View>
+                                <Text style={{ fontSize: 14, color: 'red',fontWeight:700 }}>Please choose size !!</Text>
+
+                            </View>}
 
                         </View>
                         <Text>Ingridents</Text>
@@ -360,7 +378,7 @@ const styles = StyleSheet.create({
         width: 70,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius : 10
+        borderRadius: 10
     }
 })
 export default Detail;

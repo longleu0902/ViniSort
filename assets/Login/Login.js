@@ -164,9 +164,9 @@ const Login = () => {
 
 
                         {!showSignUp &&
-                            <View style={{ alignItems: 'flex-end' }}>
+                            <TouchableOpacity onPress={()=>navigate.navigate('ForgotPassword')} style={{ alignItems: 'flex-end' }}>
                                 <Text style={{ fontSize: 16, color: '#939393', marginTop: 10 }}>Forgot password ?</Text>
-                            </View>
+                            </TouchableOpacity>
                         }
 
                     </View>

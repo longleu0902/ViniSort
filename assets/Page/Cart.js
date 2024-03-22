@@ -58,6 +58,12 @@ const Cart = () => {
 
     }
 
+    const handleMovePayment = () => {
+
+        if(total == 0) return;
+        navigate.navigate('Payment',{total : total})
+    }
+
 
     return (
         <>
@@ -138,7 +144,7 @@ const Cart = () => {
                 </View>
 
                 <Button
-                    onPress={()=>navigate.navigate('Payment',{total : total})}
+                    onPress={()=>handleMovePayment()}
                     buttonStyle={
                         {
                             height: 60,

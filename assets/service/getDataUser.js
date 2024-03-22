@@ -53,4 +53,16 @@ const fethDataValue = async (username) => {
     }
 
 }
-export { fethData, UpdateData ,fethDataValue }
+
+const fethDataCard = async () => {
+    try {
+        const data = await get(ref(database, 'cards'))
+        const dataArray = Object.values(data.val());
+        return dataArray
+
+
+    } catch (err) {
+        // console.error(err)
+    }
+}
+export { fethData, UpdateData, fethDataValue, fethDataCard }

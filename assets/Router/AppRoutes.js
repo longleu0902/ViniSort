@@ -15,16 +15,13 @@ import TrackerOder from '../Page/TrackerOder';
 import CallScreen from '../Page/CallScreen';
 import MyOders from '../Page/MyOder';
 import Profile from '../Page/Profile';
-import { useNavigation } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import ChangePassword from '../Page/Changepassword';
 
 
 
 const Stack = createNativeStackNavigator();
 
 const AppRouter = () => {
-    const navigate = useNavigation();
-    const auth = useSelector(state => state.LoginReducer.payload);
 
     return (
         <>
@@ -45,6 +42,10 @@ const AppRouter = () => {
                 <Stack.Screen name="CallScreen" component={CallScreen} />
                 <Stack.Screen name="MyOders" component={MyOders} />
                 <Stack.Screen name="Profile" component={Profile} />
+                <Stack.Screen
+                    options={{ headerShown: true }}
+                    name="ChangePassword" component={ChangePassword} />
+
             </Stack.Navigator>
         </>
 

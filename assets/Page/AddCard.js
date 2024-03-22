@@ -3,17 +3,98 @@ import { Button } from '@rneui/base';
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { CartStore } from '../Redux/CartReducer';
-
+import { uid } from 'uid';
+import { getDatabase, ref, child, get, onValue, set } from "firebase/database";
+import { database, auth } from '../config/firebaseConfig';
+import Toast from '../Model/Toast';
+import {Render} from '../Redux/RenderReducer'
 
 
 const AddCart = ({ route }) => {
+    const dispath = useDispatch();
     const navigate = useNavigation();
     const { total } = route.params;
     const { type } = route.params;
+    const [showToast, setShowToast] = useState(false);
+    const [title, setTitle] = useState('')
 
-    console.log(type)
+    const renderPayment = uid()
 
+
+    // console.log(total)
+
+    // console.log(type)
+
+
+
+    const [name, setName] = useState('')
+    const [number, setNumber] = useState('')
+    const [day, setDay] = useState('')
+    const [cvc, setCvc] = useState('')
+
+    const validForm = (name, number, day, cvc) => {
+        if (!name || !number || !day || !cvc) {
+            setShowToast(true)
+            setTitle('You do not have enough information !! ')
+            return false
+        }
+        return true
+    }
+
+    const getCard = async () => {
+        try {
+            const reponse = await get(ref(database, 'cards'))
+            const data = reponse.val();
+            if(data == null) return false
+            const dataArray = Object.values(data);
+            const check = dataArray.some(item => item.number == number && item.type == type.type)
+            if (check) {
+                setShowToast(true);
+                setTitle('Your card number is exsit !!')
+            }
+            return check
+
+
+        } catch (err) {
+            console.error(err)
+        }
+
+    }
+
+
+    const handleAddCart = async () => {
+        const checkValid = validForm(name, number, day, cvc);
+        const checkCard = await getCard();
+        if (checkValid == false) return;
+        if (checkCard) return;
+        try {
+            await set(ref(database, 'cards/' + uid()), {
+                id: uid(),
+                name: name,
+                number: number,
+                day: day,
+                type: type.type,
+                cvc: cvc
+            })
+            setShowToast(true)
+            setName('');
+            setNumber('');
+            setDay('');
+            setCvc('')
+            setTitle(' Success !! ')
+            dispath(Render(uid()))
+
+            setTimeout(() => {
+                navigate.navigate('Payment', { total : total})
+
+            }, 1000);
+
+
+        } catch (err) {
+            console.error(err)
+        }
+
+    }
 
     const handlePressScreen = () => {
         Keyboard.dismiss(); // Ẩn bàn phím khi chạm vào màn hình
@@ -22,7 +103,7 @@ const AddCart = ({ route }) => {
     return (
         <>
             <TouchableWithoutFeedback onPress={handlePressScreen}>
-                <View style={{ flex: 1 }}>
+                <View style={{ flex: 1, position: 'relative' }}>
                     <View style={styles.container}>
                         <View style={styles.header}>
                             <View style={styles.headerLeft}>
@@ -40,14 +121,22 @@ const AddCart = ({ route }) => {
                             <View style={styles.form}>
                                 <Text style={{ color: '#A0A5BA', fontSize: 14 }}>Card holder name</Text>
                                 <View style={styles.formStyle}>
-                                    <TextInput placeholder='Card Name' />
+                                    <TextInput
+                                        value={name}
+                                        onChangeText={(text) => setName(text)}
+                                        style={{ width: '100%', height: '100%' }}
+                                        placeholder='Card Name' />
                                 </View>
                             </View>
 
                             <View style={styles.form}>
                                 <Text style={{ color: '#A0A5BA', fontSize: 14 }}>Card number</Text>
                                 <View style={styles.formStyle}>
-                                    <TextInput keyboardType="numeric" placeholder='2134 _ _ _ _ _ _ _ _' />
+                                    <TextInput
+                                        value={number}
+                                        onChangeText={(text) => setNumber(text)}
+                                        style={{ width: '100%', height: '100%' }}
+                                        keyboardType="numeric" placeholder='2134 _ _ _ _ _ _ _ _' />
                                 </View>
                             </View>
 
@@ -55,13 +144,24 @@ const AddCart = ({ route }) => {
                                 <View style={[styles.form, { width: '47%' }]}>
                                     <Text style={{ color: '#A0A5BA', fontSize: 14 }}>expire date</Text>
                                     <View style={styles.formStyle}>
-                                        <TextInput placeholder='mm/yyyy' />
+                                        <TextInput
+                                            value={day}
+                                            onChangeText={(text) => setDay(text)}
+                                            style={{ width: '100%', height: '100%' }}
+                                            maxLength={7}
+                                            placeholder='mm/yyyy' />
                                     </View>
                                 </View>
                                 <View style={[styles.form, { width: '47%' }]}>
                                     <Text style={{ color: '#A0A5BA', fontSize: 14 }}>CVC</Text>
                                     <View style={styles.formStyle}>
-                                        <TextInput placeholder='***' keyboardType="numeric" />
+                                        <TextInput
+                                            value={cvc}
+                                            onChangeText={(text) => setCvc(text)}
+                                            style={{ width: '100%', height: '100%' }}
+                                            maxLength={3}
+                                            placeholder='***'
+                                            keyboardType="numeric" />
                                     </View>
                                 </View>
 
@@ -82,7 +182,7 @@ const AddCart = ({ route }) => {
                 </View>
 
                 <Button
-                    // onPress={handleMoveCart}
+                    onPress={handleAddCart}
                     buttonStyle={
                         {
                             height: 60,
@@ -95,6 +195,8 @@ const AddCart = ({ route }) => {
                 </Button>
 
             </View>
+
+            {showToast && <Toast show={setShowToast} title={title} />}
 
         </>
 

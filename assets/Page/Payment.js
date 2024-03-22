@@ -5,22 +5,26 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CartStore } from '../Redux/CartReducer';
 import { Picker } from '@react-native-picker/picker';
+import { fethDataCard } from '../service/getDataUser';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 const Payment = ({ route }) => {
     const navigate = useNavigation();
+    const renderComponet = useSelector(state => state.RenderReducer.Render)
     const { total } = route.params;
     const [show, setShow] = useState(false);
-    const [renderCash , setRenderCash] = useState([])
+    const [renderCash, setRenderCash] = useState([])
     const showModal = () => {
         setShow(prev => !prev);
+        // if(!defaultCash)
         const _renderCash = [...defaultCash];
         const combinedList = _renderCash.map(item => {
             const correspondingImg = defaultValue.find(imgItem => imgItem.type === item.type);
             return {
                 ...item,
                 img: correspondingImg ? correspondingImg.img : null,
-                status : true
+                status: true
             };
         });
         setRenderCash([...combinedList])
@@ -57,33 +61,21 @@ const Payment = ({ route }) => {
         },
 
     ]
+    const [defaultCash, setDefaultCash] = useState([])
 
-    const defaultCash = [
-        {
-            id: 1,
-            name: 'long',
-            number: '3393405400',
-            type: 'MasterCard'
-        },
-        {
-            id: 2,
-            name: 'long',
-            number: '3393405700',
-            type: 'Cash'
-        },
-        {
-            id: 3,
-            name: 'long',
-            number: '3393405900',
-            type: 'Paypal'
-        },
-        {
-            id: 4,
-            name: 'long',
-            number: '3393405000',
-            type: 'Visa'
-        },
-    ]
+
+    const getData = async () => {
+        const data = await fethDataCard();
+        // console.log(data)
+        if (data == undefined) return;
+        setDefaultCash(data)
+    }
+    useEffect(() => {
+        getData()
+    }, [renderComponet])
+    // useFocusEffect(() => {
+    //     getData();
+    // });
 
 
 
@@ -99,7 +91,7 @@ const Payment = ({ route }) => {
         _list[Idx].status = true;
         setList(_list);
         setStatusList(_list[Idx])
-        const idxListCash = defaultCash.filter(item => item.type == product.type)
+        const idxListCash = defaultCash?.filter(item => item.type == product.type)
         setListCash(idxListCash)
 
     }
@@ -114,7 +106,7 @@ const Payment = ({ route }) => {
         setList(_list);
         setStatusList(_list[Idx])
         showModal();
-        setListCash([{...data}])
+        setListCash([{ ...data }])
 
 
     }
@@ -158,7 +150,7 @@ const Payment = ({ route }) => {
                 {listCash && listCash.length > 0 ? (
                     <ScrollView>
                         <TouchableOpacity onPress={() => showModal()} >
-                            <View style={styles.listCash}>
+                            <View style={[styles.listCash , {backgroundColor:''}]}>
                                 <View style={styles.cashItem}>
                                     <Text style={{ fontSize: 16, fontWeight: 700 }}>{statusList?.type}</Text>
                                     <View style={{ flexDirection: 'row', alignItems: 'center', gap: 15 }}>
@@ -173,7 +165,7 @@ const Payment = ({ route }) => {
 
                             {show && <>
                                 {renderCash && renderCash.length > 0 && renderCash.map((item, index) => (
-                                    <TouchableOpacity key={index} onPress={() => handleSelectCash(item)} style={styles.listCash}>
+                                    <TouchableOpacity key={index} onPress={() => handleSelectCash(item)} style={[styles.listCash]}>
                                         <View style={styles.cashItem}>
                                             <Text style={{ fontSize: 16, fontWeight: 700 }}>{item.type}</Text>
                                             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 15 }}>
@@ -238,7 +230,7 @@ const Payment = ({ route }) => {
                 </View>
 
                 <Button
-                onPress={()=>navigate.navigate('PaymentSuccess')}
+                    onPress={() => navigate.navigate('PaymentSuccess')}
                     buttonStyle={
                         {
                             height: 60,

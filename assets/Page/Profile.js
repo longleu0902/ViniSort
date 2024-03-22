@@ -22,7 +22,7 @@ const Profile = () => {
         {
             id: 1,
             img: require('../Icon/Profile1.png'),
-            description: 'Personal Info'
+            description: 'Change password'
         },
         {
             id: 2,
@@ -73,6 +73,10 @@ const Profile = () => {
     }
 
     const handleOption = (id) => {
+        if(id == 1){
+            navigate.navigate('ChangePassword')
+
+        }
         if (id == 2) {
             navigate.navigate('Tracker')
         }
