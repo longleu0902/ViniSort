@@ -7,7 +7,7 @@ import OdersList from './OdersList';
 const MyOders = () => {
     const navigate = useNavigation();
     const [index, setIndex] = useState(0);
-    console.log(index)
+    // console.log(index)
     return (
         <View style={styles.container}>
 

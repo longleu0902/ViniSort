@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, ScrollView, TouchableWithoutFeedback, Keyboard, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, ScrollView, TouchableWithoutFeedback, Keyboard, ImageBackground, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { setLogin } from '../Redux/LoginReducer';
@@ -73,7 +73,7 @@ const Profile = () => {
     }
 
     const handleOption = (id) => {
-        if(id == 1){
+        if (id == 1) {
             navigate.navigate('ChangePassword')
 
         }
@@ -82,6 +82,9 @@ const Profile = () => {
         }
         if (id == 3) {
             navigate.navigate('MyOders')
+        }
+        if (id == 4) {
+            navigate.navigate('Favouriter')
         }
 
     }
@@ -129,6 +132,11 @@ const Profile = () => {
         setBtnSave(false)
 
     }
+    const [isLoading, setIsLoading] = useState(true);
+
+    const handleOnLoad = () => {
+        setIsLoading(false);
+    };
 
 
     return (
@@ -162,12 +170,18 @@ const Profile = () => {
                         </TouchableOpacity>}
 
                         {image &&
-                            <TouchableOpacity onPress={pickImage}>
+
+                            <TouchableOpacity style={styles.imgLoading} onPress={pickImage}>
+                                {isLoading && <ActivityIndicator style={styles.loading} size="small" color="#ccc" />}
+
                                 <Image source={{ uri: image }}
                                     style={{ width: 100, height: 100, borderRadius: 50 }}
+                                // onLoad={handleOnLoad}
                                 />
                             </TouchableOpacity>
+
                         }
+
                         <View style={{ gap: 10 }}>
                             <Text style={{ fontSize: 20 }}>{user}</Text>
                             <Text style={{ fontSize: 14, color: '#ccc' }}>I love fast food</Text>
@@ -272,6 +286,16 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    imgLoading : {
+        position : 'relative'
+    },
+    loading : {
+        position:'absolute',
+        width:'100%',
+        height:'100%',
+        alignItems:'center'
+        
     }
 })
 export default Profile;

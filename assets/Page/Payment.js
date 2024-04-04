@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, ScrollView , Alert} from 'react-native';
 import { Button } from '@rneui/base';
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
@@ -7,6 +7,7 @@ import { CartStore } from '../Redux/CartReducer';
 import { Picker } from '@react-native-picker/picker';
 import { fethDataCard } from '../service/getDataUser';
 import { useFocusEffect } from '@react-navigation/native';
+
 
 
 const Payment = ({ route }) => {
@@ -69,6 +70,7 @@ const Payment = ({ route }) => {
         // console.log(data)
         if (data == undefined) return;
         setDefaultCash(data)
+
     }
     useEffect(() => {
         getData()
@@ -111,6 +113,27 @@ const Payment = ({ route }) => {
 
     }
 
+    const handleAddNewCard = () => {
+        if (listCash == null || listCash.length == 0) {
+            showAlert()
+            return;
+        }
+
+        navigate.navigate('AddCard', { total: total, type: statusList })
+    }
+
+    const showAlert = () => {
+        Alert.alert(
+          'Notify',
+          `You don't choose the card type !!`,
+          [
+            { text: 'OK', onPress: () => console.log('OK Pressed') },
+          ],
+          { cancelable: false }
+        );
+      };
+      
+
 
     return (
         <>
@@ -150,7 +173,7 @@ const Payment = ({ route }) => {
                 {listCash && listCash.length > 0 ? (
                     <ScrollView>
                         <TouchableOpacity onPress={() => showModal()} >
-                            <View style={[styles.listCash , {backgroundColor:''}]}>
+                            <View style={[styles.listCash, { backgroundColor: '#F0F5FA' }]}>
                                 <View style={styles.cashItem}>
                                     <Text style={{ fontSize: 16, fontWeight: 700 }}>{statusList?.type}</Text>
                                     <View style={{ flexDirection: 'row', alignItems: 'center', gap: 15 }}>
@@ -213,7 +236,7 @@ const Payment = ({ route }) => {
 
 
                 <Button
-                    onPress={() => navigate.navigate('AddCard', { total: total, type: statusList })}
+                    onPress={handleAddNewCard}
                     buttonStyle={{ borderWidth: 1, borderColor: '#F0ECE9', height: 60, borderRadius: 10 }}
                     titleStyle={{ color: '#FF7622' }}
                     color='#fff'
@@ -328,7 +351,7 @@ const styles = StyleSheet.create({
     },
 
     listCash: {
-        backgroundColor: '#F0F5FA',
+        backgroundColor: '#ccc2',
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingVertical: 20,

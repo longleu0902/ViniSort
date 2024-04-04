@@ -16,6 +16,7 @@ import CallScreen from '../Page/CallScreen';
 import MyOders from '../Page/MyOder';
 import Profile from '../Page/Profile';
 import ChangePassword from '../Page/Changepassword';
+import Favouriter from '../Page/Favourite';
 
 
 
@@ -45,6 +46,8 @@ const AppRouter = () => {
                 <Stack.Screen
                     options={{ headerShown: true }}
                     name="ChangePassword" component={ChangePassword} />
+                <Stack.Screen name="Favouriter" component={Favouriter} />
+
 
             </Stack.Navigator>
         </>

@@ -6,10 +6,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CartStore } from '../Redux/CartReducer';
 import { uid } from 'uid';
 import Animated, { useSharedValue, withSpring, useAnimatedStyle, withTiming, Easing, withRepeat } from 'react-native-reanimated';
+import { favouriterFood } from '../Redux/favouriterReduce'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
 const Detail = ({ route }) => {
+
+    const favouriterStore = useSelector(state => state.favouriterReduce.favouriterFood)
+    // console.log("check favouriterStore", typeof favouriterStore)
     const navigate = useNavigation();
     // const [data , setData] = useState({})
     const { data } = route.params;
@@ -156,6 +161,55 @@ const Detail = ({ route }) => {
         setPrice(a * data.price)
     }
 
+    const storeData = async (value) => {
+        try {
+            await AsyncStorage.setItem(`Favouriter${data.id}`, JSON.stringify(value));
+        } catch (e) {
+            console.log(e)
+        }
+    };
+    const pushData = async (value) => {
+        try {
+            await AsyncStorage.setItem(`data`, JSON.stringify(value));
+        } catch (e) {
+            console.log(e)
+        }
+    };
+
+    const getData = async () => {
+        try {
+            const jsonValue = await AsyncStorage.getItem(`Favouriter${data.id}`);
+            setFavouriter(JSON.parse(jsonValue))
+            return jsonValue != null ? JSON.parse(jsonValue) : false;
+        } catch (e) {
+            //error
+        }
+    };
+    useEffect(() => {
+        getData()
+    }, [])
+
+    const handleClickFavourite = () => {
+        setFavouriter(prev => !prev)
+        console.log(favouriter)
+
+    }
+
+    const handleAddFavourtive = (data) => {
+        if (favouriter) {
+            const filter = favouriterStore.filter((item) => item.id !== data.id)
+            dispath(favouriterFood(filter))
+            storeData(false)
+            pushData(filter)
+        } else {
+            const push = [...favouriterStore, data]
+            dispath(favouriterFood(push))
+            pushData(push)
+            storeData(true)
+        }
+
+    }
+
     return (
         <View style={styles.container}>
 
@@ -167,7 +221,10 @@ const Detail = ({ route }) => {
                             <Image source={require('../Icon/Back.png')} />
                         </TouchableOpacity>
                         <TouchableOpacity
-                            onPress={(prev) => setFavouriter(prev => !prev)}
+                            onPress={(prev) => {
+                                handleClickFavourite()
+                                handleAddFavourtive(data)
+                            }}
                             style={[styles.menu,
                             { left: 350, backgroundColor: favouriter == true ? '#ccc' : '#fff' }
                             ]}>
@@ -204,7 +261,7 @@ const Detail = ({ route }) => {
                             </View>
                         </View>
                         <View style={styles.selectSize}>
-                            <Text style={{color : toastSize ? 'red' : '#000'}}>SIZE:  </Text>
+                            <Text style={{ color: toastSize ? 'red' : '#000' }}>SIZE:  </Text>
                             {checkBtn.map((item, index) => (
                                 <Button
                                     key={index}
@@ -219,7 +276,7 @@ const Detail = ({ route }) => {
                                 </Button>
                             ))}
                             {toastSize && <View>
-                                <Text style={{ fontSize: 14, color: 'red',fontWeight:700 }}>Please choose size !!</Text>
+                                <Text style={{ fontSize: 14, color: 'red', fontWeight: 700 }}>Please choose size !!</Text>
 
                             </View>}
 

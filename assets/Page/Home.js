@@ -1,15 +1,34 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Button } from '@rneui/base';
 import Category from './Category';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect } from 'react';
+import { favouriterFood } from '../Redux/favouriterReduce'
+
+
+
 
 
 
 
 const Home = () => {
     const cart = useSelector((state) => state.cartReducer.CartStore);
+    const dispath = useDispatch();
     const navigate = useNavigation();
+    const getData = async () => {
+        try {
+            const jsonValue = await AsyncStorage.getItem(`data`);
+            dispath(favouriterFood(JSON.parse(jsonValue)))
+            // console.log("check data", jsonValue)
+        } catch (e) {
+            //error
+        }
+    };
+    useEffect(() => {
+        getData();
+    }, [])
 
 
     return (
