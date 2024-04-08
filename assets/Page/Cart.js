@@ -81,16 +81,16 @@ const Cart = () => {
                 <ScrollView showsVerticalScrollIndicator={false}>
                     {cart.map((item, index) => (
                         <View key={index} style={styles.body}>
-                            <View style={styles.img}>
+                            <TouchableOpacity onPress={()=> navigate.navigate("Detail", {data : item})} style={styles.img}>
                                 <Image style={{ width: 110, height: 100 }} source={{ uri :item.img}} />
-                            </View>
+                            </TouchableOpacity>
                             <View style={styles.infomation}>
                                 <View style={styles.info}>
-                                    <View style={{ gap: 10 }}>
+                                    <TouchableOpacity onPress={()=> navigate.navigate("Detail", {data : item})} style={{ gap: 10 }}>
                                         <Text style={{ fontSize: 16, width: 120 }}>{item.name}</Text>
                                         <Text style={{ fontWeight: 700, fontSize: 20 }}>${item.price * item.amount}</Text>
                                         <Text style={{ fontSize: 16 }}>Size : {item.size}</Text>
-                                    </View>
+                                    </TouchableOpacity>
                                     <TouchableOpacity onPress={() => removeItem(item)}>
                                         <Image source={require('../Icon/remove.png')} />
                                     </TouchableOpacity>
