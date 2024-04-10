@@ -1,9 +1,14 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { Button } from '@rneui/base';
 import { useNavigation } from '@react-navigation/native';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CartStore } from '../Redux/CartReducer';
+import { text } from '@fortawesome/fontawesome-svg-core';
+import { fethData, UpdateData, fethDataValue } from '../service/getDataUser';
+import Toast from '../Model/Toast';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 
@@ -11,8 +16,23 @@ const Cart = () => {
     const navigate = useNavigation();
     const [total, setToltal] = useState(0)
     const cart = useSelector(state => state.cartReducer.CartStore);
+    const user = useSelector(state => state.LoginReducer.payload.username)
+    const [edit, setEdit] = useState(false);
+    const [address, setAddress] = useState("");
+    const [phone, setPhone] = useState("");
+    const [showToast, setShowToast] = useState(false);
+    const [toast, setToast] = useState('');
+
     // console.log("check cart", cart);
     const dispath = useDispatch();
+
+    const getDataUser = async () => {
+        const data = await fethDataValue(user)
+        if (data && data.address && data.phone) {
+            setAddress(data.address)
+            setPhone(data.phone)
+        }
+    }
 
     const getTotal = () => {
         const _cart = [...cart];
@@ -24,6 +44,7 @@ const Cart = () => {
     }
     useEffect(() => {
         getTotal();
+        getDataUser();
 
     }, [cart]);
 
@@ -39,7 +60,7 @@ const Cart = () => {
         dispath(CartStore(_cartList));
     }
 
-    const handleIncrement = (id , size) => {
+    const handleIncrement = (id, size) => {
         const _cartList = [...cart]
         const Idx = _cartList.findIndex(item => item.id == id && item.size == size)
         _cartList[Idx] = { ..._cartList[Idx], amount: _cartList[Idx].amount + 1 }
@@ -51,17 +72,45 @@ const Cart = () => {
         dispath(CartStore(_cartList));
     }
 
-    const removeItem = (product) => {
+    const removeItem = async (product) => {
         const _cartList = [...cart];
         const remove = _cartList.filter(item => item.id != product.id || item.size !== product.size);
         dispath(CartStore(remove));
+        await AsyncStorage.setItem(`CartList`, JSON.stringify(remove));
+
 
     }
 
     const handleMovePayment = () => {
 
-        if(total == 0) return;
-        navigate.navigate('Payment',{total : total})
+        if (total == 0) {
+            setShowToast(true)
+            setToast("You don't have any orders")
+            return;
+        }
+        if (address == '') {
+            setShowToast(true)
+            setToast("You don't have address")
+            return;
+        }
+        if (phone == '') {
+            setShowToast(true)
+            setToast("You don't have number phone")
+            return;
+        }
+        navigate.navigate('Payment', { total: total, address: address, phone: phone })
+    }
+
+    const handleSave = async () => {
+        const userID = await fethData(user)
+        await UpdateData(userID, {
+            address: address,
+            phone: phone
+        })
+        setEdit(prev => !prev)
+    }
+    const handleOpenEdit = () => {
+        setEdit(prev => !prev)
     }
 
 
@@ -81,12 +130,12 @@ const Cart = () => {
                 <ScrollView showsVerticalScrollIndicator={false}>
                     {cart.map((item, index) => (
                         <View key={index} style={styles.body}>
-                            <TouchableOpacity onPress={()=> navigate.navigate("Detail", {data : item})} style={styles.img}>
-                                <Image style={{ width: 110, height: 100 }} source={{ uri :item.img}} />
+                            <TouchableOpacity onPress={() => navigate.navigate("Detail", { data: item })} style={styles.img}>
+                                <Image style={{ width: 110, height: 100 }} source={{ uri: item.img }} />
                             </TouchableOpacity>
                             <View style={styles.infomation}>
                                 <View style={styles.info}>
-                                    <TouchableOpacity onPress={()=> navigate.navigate("Detail", {data : item})} style={{ gap: 10 }}>
+                                    <TouchableOpacity onPress={() => navigate.navigate("Detail", { data: item })} style={{ gap: 10 }}>
                                         <Text style={{ fontSize: 16, width: 120 }}>{item.name}</Text>
                                         <Text style={{ fontWeight: 700, fontSize: 20 }}>${item.price * item.amount}</Text>
                                         <Text style={{ fontSize: 16 }}>Size : {item.size}</Text>
@@ -122,21 +171,51 @@ const Cart = () => {
             </View>
 
 
-            <View style={styles.addToCart}>
+            <View style={[styles.addToCart, { height: !edit ? 300 : "50%" }]}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Text style={{ fontSize: 14, color: '#A0A5BA' }}>Delivery Address</Text>
-                    <TouchableOpacity>
-                        <Text style={{ color: '#FF7622', textDecorationLine: 'underline', paddingRight: 10 }}
-                        >EDIT</Text>
-                    </TouchableOpacity>
+                    {!edit && <>
+                        <Text style={{ fontSize: 14, color: '#A0A5BA' }}>Adress : {address}</Text>
+                        <TouchableOpacity
+                            onPress={() => handleOpenEdit()}>
+                            <Text style={{ color: '#FF7622', textDecorationLine: 'underline', paddingRight: 10 }}
+                            >EDIT</Text>
+                        </TouchableOpacity>
+                    </>}
+
+                    {edit && <>
+                        <TextInput
+                            autoFocus={true}
+                            value={address}
+                            onChangeText={(text) => setAddress(text)}
+                            placeholder='Change to address'
+                            style={{ width: '80%', backgroundColor: '#fff', borderRadius: 5, padding: 5 }}
+                        />
+                        <TouchableOpacity onPress={() => handleSave()}>
+                            <Text style={{ color: '#FF7622', textDecorationLine: 'underline', paddingRight: 10 }}
+                            >Save</Text>
+                        </TouchableOpacity>
+
+                    </>}
+
+
                 </View>
-                <Text style={{ fontSize: 14, color: '#A0A5BA' }}>2118 Thornridge Cir. Syracuse</Text>
+                {!edit &&
+                    <Text style={{ fontSize: 14, color: '#A0A5BA' }}>Phone : {phone}</Text>
+                }
+                {edit &&
+                    <TextInput
+                        value={phone}
+                        onChangeText={(text) => setPhone(text)}
+                        placeholder='Phone'
+                        style={{ width: '80%', backgroundColor: '#fff', borderRadius: 5, padding: 5 }}
+                    />
+                }
 
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Text style={{ fontSize: 14, color: '#A0A5BA' }}>Total:
                         <Text style={{ fontSize: 25, color: "#000" }}>  ${total}</Text>
                     </Text>
-                    <TouchableOpacity onPress={()=> navigate.navigate('MyOders')} style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <TouchableOpacity onPress={() => navigate.navigate('MyOders')} style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Text style={{ color: '#FF7622', paddingRight: 10 }}
                         >Breakdown</Text>
                         <Image source={require('../Icon/Vector.png')} />
@@ -144,7 +223,7 @@ const Cart = () => {
                 </View>
 
                 <Button
-                    onPress={()=>handleMovePayment()}
+                    onPress={() => handleMovePayment()}
                     buttonStyle={
                         {
                             height: 60,
@@ -157,6 +236,8 @@ const Cart = () => {
                 </Button>
 
             </View>
+            {showToast && <Toast show={setShowToast} title={toast} />}
+
 
         </>
 
@@ -181,7 +262,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         gap: 10,
-        
+
     },
     menu: {
         width: 45,
@@ -228,7 +309,6 @@ const styles = StyleSheet.create({
     },
     addToCart: {
         backgroundColor: '#F0F5FA',
-        height: 300,
         borderTopRightRadius: 50,
         borderTopLeftRadius: 30,
         flexDirection: 'column',

@@ -100,7 +100,7 @@ const TrackerOder = ({ route }) => {
                 </View>
                 <View style={styles.info}>
                     <View style={{ height: 65, width: 65 }}>
-                        <Image style={{ height: 65, width: 65 }} source={data?.img} />
+                        <Image style={{ height: 65, width: 65 }} source={{uri : data?.img}} />
                     </View>
                     <View style={styles.infomation}>
                         <Text style={{ fontSize: 20 }}>{data?.name}</Text>

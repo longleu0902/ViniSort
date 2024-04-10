@@ -67,7 +67,7 @@ const Detail = ({ route }) => {
     const [amount, setAmount] = useState(1);
     const [price, setPrice] = useState(data.price);
 
-    const handleMoveCart = () => {
+    const handleMoveCart =  () => {
         const filterSize = checkBtn.filter((item => item.status == true));
         if (filterSize.length == 0) {
             setToastSize(true)
@@ -88,9 +88,9 @@ const Detail = ({ route }) => {
         }, 1700)
 
 
-        setTimeout(() => {
+        setTimeout(async () => {
             const filterSize = checkBtn.filter((item => item.status == true));
-            console.log('check filter', filterSize)
+            // console.log('check filter', filterSize)
             const _cart = [...cart];
             const idxCart = _cart.findIndex((item) => item.id == data.id && item.size == filterSize[0]?.size);
             // console.log(idxCart)
@@ -106,6 +106,7 @@ const Detail = ({ route }) => {
                 price: data.price,
                 amount: +amount,
                 size: filterSize[0]?.size || '10',
+                category : data.category
             }
 
             if (idxCart == -1) {
@@ -116,8 +117,8 @@ const Detail = ({ route }) => {
                 _cart[idxCart] = { ..._cart[idxCart], ...arr, amount: _cart[idxCart].amount + amount }
             }
             dispath(CartStore([..._cart]))
+            await AsyncStorage.setItem(`CartList`, JSON.stringify([..._cart]));
             navigate.navigate('Cart');
-
         }, 1900)
 
     }
@@ -226,7 +227,7 @@ const Detail = ({ route }) => {
                                 handleAddFavourtive(data)
                             }}
                             style={[styles.menu,
-                            { left: 350, backgroundColor: favouriter == true ? '#ccc' : '#fff' }
+                            { left: 330, backgroundColor: favouriter == true ? '#ccc' : '#fff' }
                             ]}>
                             <Image source={require('../Icon/favouriter.png')} />
                         </TouchableOpacity>

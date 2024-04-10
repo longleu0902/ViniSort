@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, ScrollView , Alert} from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, ScrollView, Alert } from 'react-native';
 import { Button } from '@rneui/base';
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
@@ -6,16 +6,25 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CartStore } from '../Redux/CartReducer';
 import { Picker } from '@react-native-picker/picker';
 import { fethDataCard } from '../service/getDataUser';
-import { useFocusEffect } from '@react-navigation/native';
+import Toast from '../Model/Toast';
+import { database, auth } from '../config/firebaseConfig';
+import { ref, set } from "firebase/database";
+import { uid } from 'uid';
+
+
 
 
 
 const Payment = ({ route }) => {
     const navigate = useNavigation();
     const renderComponet = useSelector(state => state.RenderReducer.Render)
-    const { total } = route.params;
+    const cart = useSelector(state => state.cartReducer.CartStore);
+    const user = useSelector(state => state.LoginReducer.payload.username)
+    const { total, address, phone } = route.params;
     const [show, setShow] = useState(false);
-    const [renderCash, setRenderCash] = useState([])
+    const [renderCash, setRenderCash] = useState([]);
+    const [showToast, setShowToast] = useState(false);
+    const [toast, setToast] = useState('');
     const showModal = () => {
         setShow(prev => !prev);
         // if(!defaultCash)
@@ -63,8 +72,6 @@ const Payment = ({ route }) => {
 
     ]
     const [defaultCash, setDefaultCash] = useState([])
-
-
     const getData = async () => {
         const data = await fethDataCard();
         // console.log(data)
@@ -124,15 +131,34 @@ const Payment = ({ route }) => {
 
     const showAlert = () => {
         Alert.alert(
-          'Notify',
-          `You don't choose the card type !!`,
-          [
-            { text: 'OK', onPress: () => console.log('OK Pressed') },
-          ],
-          { cancelable: false }
+            'Notify',
+            `You don't choose the card type !!`,
+            [
+                { text: 'OK', onPress: () => console.log('OK Pressed') },
+            ],
+            { cancelable: false }
         );
-      };
-      
+    };
+
+    const handleConfirm = async () => {
+        if (listCash.length > 0) {
+
+            await set(ref(database, 'buy/' + uid()), {
+                username: user,
+                address: address,
+                total: total,
+                phone: phone,
+                cart: [...cart]
+            })
+            navigate.navigate('PaymentSuccess')
+        } else {
+            setToast("Please choose card !!!");
+            setShowToast(true)
+        }
+
+
+    }
+
 
 
     return (
@@ -231,10 +257,6 @@ const Payment = ({ route }) => {
                     </View>
                 )}
 
-
-
-
-
                 <Button
                     onPress={handleAddNewCard}
                     buttonStyle={{ borderWidth: 1, borderColor: '#F0ECE9', height: 60, borderRadius: 10 }}
@@ -253,7 +275,7 @@ const Payment = ({ route }) => {
                 </View>
 
                 <Button
-                    onPress={() => navigate.navigate('PaymentSuccess')}
+                    onPress={() => handleConfirm()}
                     buttonStyle={
                         {
                             height: 60,
@@ -266,6 +288,9 @@ const Payment = ({ route }) => {
                 </Button>
 
             </View>
+
+            {showToast && <Toast show={setShowToast} title={toast} />}
+
 
         </>
 

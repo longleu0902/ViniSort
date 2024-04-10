@@ -5,7 +5,9 @@ import Category from './Category';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect } from 'react';
-import { favouriterFood } from '../Redux/favouriterReduce'
+import { favouriterFood } from '../Redux/favouriterReduce';
+import { CartStore } from '../Redux/CartReducer';
+
 
 
 
@@ -20,7 +22,13 @@ const Home = () => {
     const getData = async () => {
         try {
             const jsonValue = await AsyncStorage.getItem(`data`);
+            const CartList = await AsyncStorage.getItem(`CartList`);
+
+            // console.log("CartList",JSON.parse(CartList) )
+
             dispath(favouriterFood(JSON.parse(jsonValue)))
+            dispath(CartStore(JSON.parse(CartList)))
+
             // console.log("check data", jsonValue)
         } catch (e) {
             //error
