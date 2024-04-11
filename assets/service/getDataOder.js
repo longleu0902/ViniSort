@@ -25,7 +25,7 @@ const fethDataKey = async (username) => {
 
 const UpdateData = async (uid, data) => {
     try {
-        const userRef = ref(database, `Buy/${uid}`);
+        const userRef = ref(database, `buy/${uid}`);
         await update(userRef, data)
 
     } catch (err) {

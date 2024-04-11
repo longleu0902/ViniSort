@@ -227,7 +227,7 @@ const Detail = ({ route }) => {
                                 handleAddFavourtive(data)
                             }}
                             style={[styles.menu,
-                            { left: 330, backgroundColor: favouriter == true ? '#ccc' : '#fff' }
+                            { left: 350, backgroundColor: favouriter == true ? '#ccc' : '#fff' }
                             ]}>
                             <Image source={require('../Icon/favouriter.png')} />
                         </TouchableOpacity>

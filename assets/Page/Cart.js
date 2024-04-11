@@ -35,11 +35,14 @@ const Cart = () => {
     }
 
     const getTotal = () => {
-        const _cart = [...cart];
-        let toltal = _cart.reduce((a, b) => {
-            return Number(a) + Number(b.price) * Number(b.amount)
-        }, 0)
-        setToltal(toltal)
+        if(cart !== null){
+            const _cart =  [...cart];
+            let toltal = _cart.reduce((a, b) => {
+                return Number(a) + Number(b.price) * Number(b.amount)
+            }, 0)
+            setToltal(toltal)
+        }
+   
 
     }
     useEffect(() => {
@@ -75,8 +78,9 @@ const Cart = () => {
     const removeItem = async (product) => {
         const _cartList = [...cart];
         const remove = _cartList.filter(item => item.id != product.id || item.size !== product.size);
-        dispath(CartStore(remove));
         await AsyncStorage.setItem(`CartList`, JSON.stringify(remove));
+        dispath(CartStore(remove));
+
 
 
     }
@@ -128,7 +132,7 @@ const Cart = () => {
                     </View>
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    {cart.map((item, index) => (
+                    {cart?.map((item, index) => (
                         <View key={index} style={styles.body}>
                             <TouchableOpacity onPress={() => navigate.navigate("Detail", { data: item })} style={styles.img}>
                                 <Image style={{ width: 110, height: 100 }} source={{ uri: item.img }} />

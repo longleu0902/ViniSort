@@ -10,6 +10,9 @@ import Toast from '../Model/Toast';
 import { database, auth } from '../config/firebaseConfig';
 import { ref, set } from "firebase/database";
 import { uid } from 'uid';
+import { fethDataValue, UpdateData, fethDataKey } from "../service/getDataOder";
+
+
 
 
 
@@ -142,14 +145,32 @@ const Payment = ({ route }) => {
 
     const handleConfirm = async () => {
         if (listCash.length > 0) {
+            const cartWithId = cart.map((item, index) => {
+                return { ...item, id: uid() };
+            });
+            const key = await fethDataKey(user);
+            // console.log("check key", key)
+            if (key == undefined) {
+                await set(ref(database, 'buy/' + uid()), {
+                    username: user,
+                    address: address,
+                    total: total,
+                    phone: phone,
+                    cart: [...cartWithId]
+                })
+            } else {
+                const data = await fethDataValue(user)
+                // console.log("check data", data.cart)
+                await UpdateData(key, {
+                    username: user,
+                    address: address,
+                    total: data.total + total,
+                    phone: phone,
+                    cart: data.cart ? [...data.cart , ...cartWithId] :[...cartWithId]
 
-            await set(ref(database, 'buy/' + uid()), {
-                username: user,
-                address: address,
-                total: total,
-                phone: phone,
-                cart: [...cart]
-            })
+                })
+            }
+
             navigate.navigate('PaymentSuccess')
         } else {
             setToast("Please choose card !!!");

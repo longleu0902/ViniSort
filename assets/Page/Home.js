@@ -21,14 +21,18 @@ const Home = () => {
     const navigate = useNavigation();
     const getData = async () => {
         try {
+            const arr = []
             const jsonValue = await AsyncStorage.getItem(`data`);
             const CartList = await AsyncStorage.getItem(`CartList`);
 
             // console.log("CartList",JSON.parse(CartList) )
 
             dispath(favouriterFood(JSON.parse(jsonValue)))
-            dispath(CartStore(JSON.parse(CartList)))
-
+            if (CartList !== null) {
+                dispath(CartStore(JSON.parse(CartList)))
+            } else {
+                dispath(CartStore(arr))
+            }
             // console.log("check data", jsonValue)
         } catch (e) {
             //error
@@ -61,7 +65,7 @@ const Home = () => {
                     <View style={styles.cart}>
                         <Image source={require('../Icon/Cart.png')} />
                         <View style={styles.count}>
-                            <Text style={{ color: '#fff', fontWeight: "700" }}>{cart.length}</Text>
+                            <Text style={{ color: '#fff', fontWeight: "700" }}>{cart?.length || 0}</Text>
                         </View>
                     </View>
 

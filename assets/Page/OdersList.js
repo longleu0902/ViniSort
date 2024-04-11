@@ -2,7 +2,7 @@ import { Button } from '@rneui/base';
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, ScrollView, TouchableWithoutFeedback, Keyboard, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { fethDataValue } from "../service/getDataOder";
+import { fethDataValue, UpdateData, fethDataKey } from "../service/getDataOder";
 import { useSelector } from 'react-redux';
 
 
@@ -10,54 +10,32 @@ const OdersList = (props) => {
     const user = useSelector(state => state.LoginReducer.payload.username)
     const navigate = useNavigation()
     const indexProps = props.index
-    const [list, setList] = useState([]);
     const getData = async () => {
         const req = await fethDataValue(user)
-        if(req && req.cart){
-            setList([...req.cart])
-        }
+        const key = await fethDataKey(user);
+        if (req && req.cart) {
+            props.setList([...req.cart])
+            props.setProductData({ ...req })
+        }else{
+            props.setList([])
 
+        }
     }
+
 
 
     const handleClick = (product) => {
 
-        console.log("check product", product)
         navigate.navigate("TrackerOder", { data: product })
 
     }
 
+    const handleCancel = async (product) => {
+        props.show(true);
+        props.toast(`Do you have cancel ${product.name} orders?`)
+        props.setProductRemove(product)
 
-
-    const ongoing = [
-        {
-            id: 1,
-            img: require('../Image/Rectangle 15.png'),
-            name: 'PizzaHut',
-            price: '34,5',
-            amount: '01',
-            category: 'Food'
-
-        },
-        {
-            id: 2,
-            img: require('../Image/MC.png'),
-            name: 'McDonald',
-            price: '40,5',
-            amount: '02',
-            category: 'Food'
-
-        },
-        {
-            id: 3,
-            img: require('../Image/Dink.png'),
-            name: 'StarBucks',
-            price: '10,2',
-            amount: '03',
-            category: 'Dink'
-
-        },
-    ]
+    }
 
     const History = [
         {
@@ -94,59 +72,62 @@ const OdersList = (props) => {
     useEffect(() => {
 
         if (indexProps == 0) {
-            // setList(ongoing)
             getData();
         } else {
-            setList(History)
+            props.setList(History)
         }
-    }, [indexProps])
+    }, [indexProps , props.render])
 
 
     return (
-        <ScrollView>
-            <View style={styles.container}>
-
-                {list.map((product, index) => (
-                    <View key={index} style={styles.container}>
-                        <View style={styles.title}>
-                            <Text style={{ fontSize: 14 }}>{product?.category}</Text>
-                            {indexProps == 1 && <Text style={{ color: product.status == 'Completed' ? '#059C6A' : 'red', fontSize: 14 }}>{product?.status}</Text>}
-                        </View >
-                        <View key={index} style={styles.list}>
-                            <Image style={{ width: 74, height: 63, borderRadius: 7 }} source={{uri :product?.img}} />
-                            <View style={styles.listItem}>
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: 280 }}>
-                                    <Text style={{ fontWeight: 700, fontSize: 14 }}>{product?.name}</Text>
-                                    <Text style={{ fontWeight: 700, fontSize: 12, color: '#ccc' }}>{product?.id}</Text>
-                                </View>
-                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <Text style={{ fontWeight: 700, fontSize: 14 }}>${product?.price}   </Text>
-                                    <Text style={{ fontWeight: 700, fontSize: 12, color: '#ccc' }}>|   {indexProps == 1 ? `${product.time} - ${product.amount}` : product?.amount} Item</Text>
+        <>
+            <ScrollView>
+                <View style={styles.container}>
+                    {props.list.map((product, index) => (
+                        <View key={index} style={styles.container}>
+                            <View style={styles.title}>
+                                <Text style={{ fontSize: 14 }}>{product?.category}</Text>
+                                {indexProps == 1 && <Text style={{ color: product.status == 'Completed' ? '#059C6A' : 'red', fontSize: 14 }}>{product?.status}</Text>}
+                            </View >
+                            <View key={index} style={styles.list}>
+                                <Image style={{ width: 74, height: 63, borderRadius: 7 }} source={{ uri: product?.img }} />
+                                <View style={styles.listItem}>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: 280 }}>
+                                        <Text style={{ fontWeight: 700, fontSize: 14 }}>{product?.name}</Text>
+                                        <Text style={{ fontWeight: 700, fontSize: 12, color: '#ccc' }}>{product?.id}</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                        <Text style={{ fontWeight: 700, fontSize: 14 }}>${product?.price}   </Text>
+                                        <Text style={{ fontWeight: 700, fontSize: 12, color: '#ccc' }}>|   {indexProps == 1 ? `${product.time} - ${product.amount}` : product?.amount} Item</Text>
+                                    </View>
                                 </View>
                             </View>
+                            <View style={{ flexDirection: indexProps == 0 ? 'row' : 'row-reverse', justifyContent: 'space-between' }}>
+                                <Button
+                                    onPress={() => handleClick(product)}
+                                    buttonStyle={{ borderRadius: 5, paddingVertical: 15, width: 150 }}
+                                    color="#FF7622">{indexProps == 0 ? 'Track oders' : 'Re-Order'}
+                                </Button>
+                                <Button
+                                    onPress={() => handleCancel(product)}
+                                    titleStyle={{ color: '#FF7622' }}
+                                    buttonStyle={{ borderRadius: 5, paddingVertical: 15, width: 150, borderWidth: 2, borderColor: '#FF7622' }}
+                                    color="#fff">{indexProps == 0 ? 'Cancel' : 'Rate'}
+                                </Button>
+                            </View>
+
+
                         </View>
-                        <View style={{ flexDirection: indexProps == 0 ? 'row' : 'row-reverse', justifyContent: 'space-between' }}>
-                            <Button
-                                onPress={() => handleClick(product)}
-                                buttonStyle={{ borderRadius: 5, paddingVertical: 15, width: 150 }}
-                                color="#FF7622">{indexProps == 0 ? 'Track oders' : 'Re-Order'}
-                            </Button>
-                            <Button
-                                titleStyle={{ color: '#FF7622' }}
-                                buttonStyle={{ borderRadius: 5, paddingVertical: 15, width: 150, borderWidth: 2, borderColor: '#FF7622' }}
-                                color="#fff">{indexProps == 0 ? 'Cancel' : 'Rate'}
-                            </Button>
-                        </View>
-
-
-                    </View>
-                ))}
+                    ))}
 
 
 
 
-            </View>
-        </ScrollView>
+                </View>
+
+            </ScrollView>
+        </>
+
 
 
 
@@ -156,7 +137,8 @@ const OdersList = (props) => {
 
 const styles = StyleSheet.create({
     container: {
-        gap: 20
+        gap: 20,
+        flex: 1
     },
     title: {
         flexDirection: 'row',
