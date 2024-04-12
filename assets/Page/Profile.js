@@ -86,6 +86,13 @@ const Profile = () => {
         if (id == 4) {
             navigate.navigate('Favouriter')
         }
+        if(id == 5) {
+
+        }
+        if(id == 6) {
+            navigate.navigate('Payment' , {total : 0 , address : '' , phone : ''})
+            
+        }
 
     }
 

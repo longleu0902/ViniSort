@@ -130,6 +130,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         gap: 20
     },
+    list: {
+        flex:1
+    },
     header: {
         marginTop: 60,
         height: 50,

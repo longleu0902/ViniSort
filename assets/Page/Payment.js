@@ -144,6 +144,21 @@ const Payment = ({ route }) => {
     };
 
     const handleConfirm = async () => {
+        if(total == 0 ) {
+            setToast("You don't have oders !!!");
+            setShowToast(true)
+            return ;
+        } 
+        if(address == '' ) {
+            setToast("Please give me the address !!!");
+            setShowToast(true)
+            return ;
+        }
+        if(phone == '' ) {
+            setToast("Please give me the number phone !!!");
+            setShowToast(true)
+            return ;
+        }
         if (listCash.length > 0) {
             const cartWithId = cart.map((item, index) => {
                 return { ...item, id: uid() };

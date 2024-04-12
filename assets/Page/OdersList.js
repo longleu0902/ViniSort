@@ -32,7 +32,7 @@ const OdersList = (props) => {
 
     const handleCancel = async (product) => {
         props.show(true);
-        props.toast(`Do you have cancel ${product.name} orders?`)
+        props.toast(`Do you have cancel ${product.name} orders ?`)
         props.setProductRemove(product)
 
     }
@@ -81,7 +81,7 @@ const OdersList = (props) => {
 
     return (
         <>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.container}>
                     {props.list.map((product, index) => (
                         <View key={index} style={styles.container}>
