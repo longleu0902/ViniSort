@@ -9,7 +9,7 @@ import Animated, { useSharedValue, withSpring, useAnimatedStyle, withTiming } fr
 
 
 const TrackerOder = ({ route }) => {
-    const navigate = useNavigation();
+    const navigate = useNavigation<any>();
     const translateY = useSharedValue(400);
 
     const { data } = route.params;
@@ -113,7 +113,7 @@ const TrackerOder = ({ route }) => {
                 </View>
                 <View style={styles.time}>
                     <View style={{ alignItems: 'center', gap: 10, marginBottom: 20 }}>
-                        <Text style={{ fontSize: 25, fontWeight: 700 }}>20 min</Text>
+                        <Text style={{ fontSize: 25, fontWeight: "700" }}>20 min</Text>
                         <Text style={{ fontSize: 20, color: '#ccc' }}>Estimated delivery time</Text>
                     </View>
                     {renderTiming.map((item, index) => (
@@ -148,7 +148,7 @@ const TrackerOder = ({ route }) => {
                 <View style={{ gap: 10, flexDirection: 'row', alignItems: 'center' }}>
                     <Image source={require('../Icon/Profile.png')} />
                     <View>
-                        <Text style={{ fontSize: 20, fontWeight: 700 }}>Robert F.</Text>
+                        <Text style={{ fontSize: 20, fontWeight: "700" }}>Robert F.</Text>
                         <Text style={{ fontSize: 14 }}>Courier</Text>
                     </View>
                 </View>

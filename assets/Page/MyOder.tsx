@@ -12,9 +12,9 @@ import { useSelector } from 'react-redux';
 
 
 const MyOders = () => {
-    const user = useSelector(state => state.LoginReducer.payload.username)
+    const user = useSelector<any>(state => state.LoginReducer.payload.username)
 
-    const navigate = useNavigation();
+    const navigate = useNavigation<any>();
     const [index, setIndex] = useState(0);
 
     //Props Toast Model
@@ -24,8 +24,8 @@ const MyOders = () => {
 
     // Props => OdersList
     const [list, setList] = useState([]);
-    const [productRemove, setProductRemove] = useState({});
-    const [productData, setProductData] = useState({})
+    const [productRemove, setProductRemove] = useState<any>({});
+    const [productData, setProductData] = useState<any>({})
     const [render, setRender] = useState(0)
 
 
@@ -37,7 +37,7 @@ const MyOders = () => {
 
     //Logic delete oders
     const handleConfimCancel = async () => {
-        const remove = list.filter(item => item.id !== productRemove.id)
+        const remove : any = list.filter(item => item.id !== productRemove.id)
         const removePrice = list.filter(item => item.id == productRemove.id)
         const key = await fethDataKey(user);
         let _product = { ...productData }
@@ -58,7 +58,7 @@ const MyOders = () => {
                             <Image source={require('../Icon/Back.png')} />
                         </TouchableOpacity>
                         <View style={styles.headerContent}>
-                            <Text style={{ color: '#1A1817', fontWeight: 500, fontSize: 20 }}>My Oders</Text>
+                            <Text style={{ color: '#1A1817', fontWeight: '500', fontSize: 20 }}>My Oders</Text>
                         </View>
 
                     </View>
@@ -75,12 +75,12 @@ const MyOders = () => {
                 <View style={styles.nav}>
                     <Tab value={index} onChange={setIndex} indicatorStyle={{ backgroundColor: '#FF7622' }}>
                         <Tab.Item>
-                            <Text style={{ color: index == 0 ? '#FF7622' : '#ccc', fontSize: 14, fontWeight: 700, paddingVertical: 15 }}>
+                            <Text style={{ color: index == 0 ? '#FF7622' : '#ccc', fontSize: 14, fontWeight: '700', paddingVertical: 15 }}>
                                 OnGoing
                             </Text>
                         </Tab.Item>
                         <Tab.Item>
-                            <Text style={{ color: index == 1 ? '#FF7622' : '#ccc', fontSize: 14, fontWeight: 700, paddingVertical: 15 }}>
+                            <Text style={{ color: index == 1 ? '#FF7622' : '#ccc', fontSize: 14, fontWeight: '700', paddingVertical: 15 }}>
                                 History
                             </Text>
                         </Tab.Item>
@@ -158,5 +158,11 @@ const styles = StyleSheet.create({
     headerContent: {
         flexDirection: 'column'
     },
+    headerRight : {
+
+    },
+    nav: {
+        
+    }
 })
 export default MyOders;

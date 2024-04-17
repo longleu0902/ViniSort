@@ -5,7 +5,7 @@ import { setLogin } from '../Redux/LoginReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { Camera, CameraType } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
-import { ref, child, getDownloadURL, uploadBytes, onValue } from "firebase/storage";
+import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import { storage } from '../config/firebaseConfig';
 import { Button } from '@rneui/base';
 import { uid } from 'uid';
@@ -14,8 +14,8 @@ import { fethData, UpdateData, fethDataValue } from '../service/getDataUser';
 
 
 const Profile = () => {
-    const user = useSelector(state => state.LoginReducer.payload.username)
-    const navigate = useNavigation();
+    const user : any = useSelector<any>(state => state.LoginReducer.payload.username)
+    const navigate = useNavigation<any>();
     const dispath = useDispatch();
 
     const Option = [
@@ -155,7 +155,7 @@ const Profile = () => {
                         <Image source={require('../Icon/Back.png')} />
                     </TouchableOpacity>
                     <View style={styles.headerContent}>
-                        <Text style={{ color: '#1A1817', fontWeight: 500, fontSize: 20 }}>Menu Profile</Text>
+                        <Text style={{ color: '#1A1817', fontWeight: "500", fontSize: 20 }}>Menu Profile</Text>
                     </View>
                 </View>
 
@@ -171,7 +171,7 @@ const Profile = () => {
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.body}>
 
-                    <View style={{ gap: 10, flexDirection: 'row', alignItems: 'center', gap: 20 }}>
+                    <View style={{ gap: 10, flexDirection: 'row', alignItems: 'center' }}>
                         {!image && <TouchableOpacity style={styles.avatar} onPress={pickImage}>
                             <Text style={{ fontSize: 20, color: '#fff' }}>+</Text>
                         </TouchableOpacity>}
@@ -302,6 +302,9 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         alignItems: 'center'
+
+    },
+    headerRight : {
 
     }
 })

@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
 import Animated, { useSharedValue, withSpring } from 'react-native-reanimated';
 
-const Message = (props) => {
+const Toast = (props) => {
     const translateX = useSharedValue(-300);
 
     const handlePress = () => {
@@ -16,10 +16,6 @@ const Message = (props) => {
     const handleClose = () => {
         props.show(false)
     }
-    const btnCancel = () => {
-        props.handleClickYes()
-    }
-
     return (
         <View style={styles.container}>
             <View style={styles.background}>
@@ -28,21 +24,19 @@ const Message = (props) => {
             <Animated.View
                 style={{
                     width: 300,
-                    height: 150,
+                    height: 300,
                     backgroundColor: '#fff',
-                    borderRadius: 15,
+                    borderRadius: 30,
                     transform: [{ translateX: translateX }],
-                    // alignItems: 'center',
+                    alignItems: 'center',
                     paddingHorizontal: 25,
                     paddingVertical: 20,
-                    position: 'absolute'
+                    position:'absolute'
                 }}
             >
-                <Text style={{ color: '#F44336', fontWeight: 600, fontSize: 20 }}>{props.title}</Text>
-                <View style={{ flexDirection: 'row', marginLeft: 10, justifyContent: 'space-around' }}>
-                    <Button onPress={btnCancel} buttonStyle={{ marginTop: 20, width: '80%', borderRadius: 20 }} color='#000'>Yes</Button>
-                    <Button onPress={() => handleClose()} buttonStyle={{ marginTop: 20, width: '80%', borderRadius: 20 }} color='#F44336'>No</Button>
-                </View>
+                <Image style={{ width: 150, height: 150 }} source={require('../Image/sorry.png')} />
+                <Text style={{ color: '#F44336', fontWeight: "600", fontSize: 20 }}>{props.title}</Text>
+                <Button onPress={() => handleClose()} buttonStyle={{ marginTop: 20, width: '100%', borderRadius: 20 }} color='#F44336'>Close</Button>
 
 
             </Animated.View>
@@ -63,10 +57,10 @@ const styles = StyleSheet.create({
     },
     background: {
         backgroundColor: '#000',
-        opacity: 0.6,
+        opacity: 0.6, 
         width: '100%',
         height: '100%',
     }
 })
-export default Message;
+export default Toast;
 

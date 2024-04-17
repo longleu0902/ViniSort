@@ -11,10 +11,20 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
+
+interface cart {
+    amount: number,
+    category: string,
+    id: number
+    img: string,
+    name: string
+    price: number
+    size: string
+}
 const Detail = ({ route }) => {
 
-    const favouriterStore = useSelector(state => state.favouriterReduce.favouriterFood)
-    const navigate = useNavigation();
+    const favouriterStore : any = useSelector<any>(state => state.favouriterReduce.favouriterFood)
+    const navigate = useNavigation<any>();
     const { data } = route.params;
     const translateY = useSharedValue(0);
     const translateX = useSharedValue(0);
@@ -25,7 +35,7 @@ const Detail = ({ route }) => {
 
 
     //  style animated add to Cart
-    const animatedStyles = useAnimatedStyle(() => ({
+    const animatedStyles = useAnimatedStyle<any>(() => ({
         transform: [
             {
                 translateY: withSpring(translateY.value, {
@@ -59,7 +69,7 @@ const Detail = ({ route }) => {
 
 
     const dispath = useDispatch();
-    const cart = useSelector(state => state.cartReducer.CartStore); 
+    const cart : any = useSelector<any>(state => state.cartReducer.CartStore); 
 
 
     const [favouriter, setFavouriter] = useState(false);
@@ -97,13 +107,13 @@ const Detail = ({ route }) => {
         // Logic add cart
         setTimeout(async () => {
             const filterSize = checkBtn.filter((item => item.status == true));
-            const _cart = [...cart];
+            const _cart : cart[] = [...cart];
             const idxCart = _cart.findIndex((item) => item.id == data.id && item.size == filterSize[0]?.size);
             if (filterSize.length == 0) {
                 setToastSize(true)
                 return;
             }
-            const arr = {
+            const arr : cart = {
                 id: data.id,
                 name: data?.name,
                 img: data.img,
@@ -118,7 +128,9 @@ const Detail = ({ route }) => {
             } else {
                 _cart[idxCart] = { ..._cart[idxCart], ...arr, amount: _cart[idxCart].amount + amount }
             }
-            dispath(CartStore([..._cart]))
+
+            const coppy : any = [..._cart]
+            dispath(CartStore(coppy))
             await AsyncStorage.setItem(`CartList`, JSON.stringify([..._cart]));
             navigate.navigate('Cart');
         }, 1900)
@@ -252,12 +264,12 @@ const Detail = ({ route }) => {
                         <Text>Restaurant</Text>
                     </View>
                     <View style={styles.introduction}>
-                        <Text style={{ fontSize: 20, fontWeight: 700 }}>{data?.name}</Text>
+                        <Text style={{ fontSize: 20, fontWeight: '700' }}>{data?.name}</Text>
                         <Text style={{ fontSize: 14, color: '#A0A5BA' }}>Prosciutto e funghi is a pizza variety that is topped with tomato sauce.</Text>
                         <View style={{ flexDirection: 'row', gap: 50 }}>
                             <View style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}>
                                 <Image source={require('../Icon/Star 1.png')} />
-                                <Text style={{ fontWeight: 700 }}>4.7</Text>
+                                <Text style={{ fontWeight: '700' }}>4.7</Text>
                             </View>
                             <View style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}>
                                 <Image source={require('../Icon/Delivery.png')} />
@@ -284,7 +296,7 @@ const Detail = ({ route }) => {
                                 </Button>
                             ))}
                             {toastSize && <View>
-                                <Text style={{ fontSize: 14, color: 'red', fontWeight: 700 }}>Please choose size !!</Text>
+                                <Text style={{ fontSize: 14, color: 'red', fontWeight: '700' }}>Please choose size !!</Text>
 
                             </View>}
 

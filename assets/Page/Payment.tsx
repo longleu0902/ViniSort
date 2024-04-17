@@ -19,10 +19,10 @@ import { fethDataValue, UpdateData, fethDataKey } from "../service/getDataOder";
 
 
 const Payment = ({ route }) => {
-    const navigate = useNavigation();
-    const renderComponet = useSelector(state => state.RenderReducer.Render)
-    const cart = useSelector(state => state.cartReducer.CartStore);
-    const user = useSelector(state => state.LoginReducer.payload.username)
+    const navigate = useNavigation<any>();
+    const renderComponet = useSelector<any>(state => state.RenderReducer.Render)
+    const cart : any = useSelector<any>(state => state.cartReducer.CartStore);
+    const user = useSelector<any>(state => state.LoginReducer.payload.username)
     const { total, address, phone } = route.params;
     const [show, setShow] = useState(false);
     const [renderCash, setRenderCash] = useState([]);
@@ -91,12 +91,12 @@ const Payment = ({ route }) => {
 
     const [list, setList] = useState(defaultValue);
     const [listCash, setListCash] = useState([]);
-    const [statusList, setStatusList] = useState([])
+    const [statusList, setStatusList] = useState<any>([])
 
     // console.log("check status", statusList)
 
-    const handleActive = (product) => {
-        const _list = [...defaultValue];
+    const handleActive = (product : any) => {
+        const _list : any = [...defaultValue];
         const Idx = _list.findIndex(item => item.id == product.id);
         _list[Idx].status = true;
         setList(_list);
@@ -109,8 +109,8 @@ const Payment = ({ route }) => {
     // console.log("check list cash", listCash)
 
 
-    const handleSelectCash = (data) => {
-        const _list = [...defaultValue];
+    const handleSelectCash = (data : any) => {
+        const _list : any = [...defaultValue];
         const Idx = _list.findIndex(item => item.type == data.type);
         _list[Idx].status = true
         setList(_list);
@@ -204,7 +204,7 @@ const Payment = ({ route }) => {
                             <Image source={require('../Icon/Back.png')} />
                         </TouchableOpacity>
                         <View style={styles.headerContent}>
-                            <Text style={{ color: '#1A1817', fontWeight: 500, fontSize: 20 }}>Payment</Text>
+                            <Text style={{ color: '#1A1817', fontWeight: "500", fontSize: 20 }}>Payment</Text>
                         </View>
                     </View>
                 </View>
@@ -235,7 +235,7 @@ const Payment = ({ route }) => {
                         <TouchableOpacity onPress={() => showModal()} >
                             <View style={[styles.listCash, { backgroundColor: '#F0F5FA' }]}>
                                 <View style={styles.cashItem}>
-                                    <Text style={{ fontSize: 16, fontWeight: 700 }}>{statusList?.type}</Text>
+                                    <Text style={{ fontSize: 16, fontWeight: "700" }}>{statusList?.type}</Text>
                                     <View style={{ flexDirection: 'row', alignItems: 'center', gap: 15 }}>
                                         <View style={{ backgroundColor: '#fff', width: 50, height: 30, alignItems: 'center', paddingHorizontal: 20, flexDirection: 'column', justifyContent: 'center', borderRadius: 5 }}>
                                             <Image source={statusList?.img} />
@@ -250,7 +250,7 @@ const Payment = ({ route }) => {
                                 {renderCash && renderCash.length > 0 && renderCash.map((item, index) => (
                                     <TouchableOpacity key={index} onPress={() => handleSelectCash(item)} style={[styles.listCash]}>
                                         <View style={styles.cashItem}>
-                                            <Text style={{ fontSize: 16, fontWeight: 700 }}>{item.type}</Text>
+                                            <Text style={{ fontSize: 16, fontWeight: "700" }}>{item.type}</Text>
                                             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 15 }}>
                                                 <View style={{ backgroundColor: '#fff', width: 50, height: 30, alignItems: 'center', paddingHorizontal: 20, flexDirection: 'column', justifyContent: 'center', borderRadius: 5 }}>
                                                     <Image source={item.img} />

@@ -15,14 +15,14 @@ import { fethData } from '../service/getDataUser'
 
 const ForgotPassword = () => {
     const dispath = useDispatch();
-    const [email, setEmail] = useState('')
+    const [email, setEmail] = useState<string>('')
 
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState<boolean>(false)
 
 
 
-    const [toast, showToast] = useState(false);
-    const [title, setTitle] = useState('')
+    const [toast, showToast] = useState<boolean>(false);
+    const [title, setTitle] = useState<string>('')
 
 
 
@@ -74,7 +74,7 @@ const ForgotPassword = () => {
                     <View style={styles.form}>
 
                         <View style={styles.formItem}>
-                            <Text style={{ fontSize: 16, fontWeight: 600 }}>Email</Text>
+                            <Text style={{ fontSize: 16, fontWeight: "600" }}>Email</Text>
                             <TextInput
                                 value={email}
                                 onChangeText={(text) => setEmail(text)}
@@ -87,7 +87,7 @@ const ForgotPassword = () => {
                         onPress={handaleUpdate}
                         buttonStyle={{ borderRadius: 12, paddingVertical: 23 }}
                         color="#E53935">
-                        <Text style={{ fontSize: 16, fontWeight: 700, color: '#fff' }}>Sent</Text>
+                        <Text style={{ fontSize: 16, fontWeight: "700", color: '#fff' }}>Sent</Text>
                     </Button>
                 </View>
             </View>
@@ -141,6 +141,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: '#000',
         opacity: 0.7,
+
+    },
+    form : {
 
     }
 })

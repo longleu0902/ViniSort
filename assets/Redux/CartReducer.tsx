@@ -9,7 +9,7 @@ const CartSlice = createSlice({
     name: 'CartStore',
     initialState,
     reducers: {
-        CartStore: (state, action) => {
+        CartStore: (state, action : any) => {
             state.CartStore = action.payload
         },
     }

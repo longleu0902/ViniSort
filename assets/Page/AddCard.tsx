@@ -7,12 +7,21 @@ import { uid } from 'uid';
 import { getDatabase, ref, child, get, onValue, set } from "firebase/database";
 import { database, auth } from '../config/firebaseConfig';
 import Toast from '../Model/Toast';
-import {Render} from '../Redux/RenderReducer'
+import { Render } from '../Redux/RenderReducer'
+
+interface DataApi {
+    id: string,
+    cvc: string,
+    day: string,
+    name: string,
+    number : string ,
+    type : string
+}
 
 
 const AddCart = ({ route }) => {
     const dispath = useDispatch();
-    const navigate = useNavigation();
+    const navigate = useNavigation<any>();
     const { total } = route.params;
     const { type } = route.params;
     const [showToast, setShowToast] = useState(false);
@@ -22,7 +31,7 @@ const AddCart = ({ route }) => {
     const [day, setDay] = useState('')
     const [cvc, setCvc] = useState('')
 
-    
+
     const validForm = (name, number, day, cvc) => {
         if (!name || !number || !day || !cvc) {
             setShowToast(true)
@@ -38,8 +47,8 @@ const AddCart = ({ route }) => {
         try {
             const reponse = await get(ref(database, 'cards'))
             const data = reponse.val();
-            if(data == null) return false
-            const dataArray = Object.values(data);
+            if (data == null) return false
+            const dataArray: DataApi[] = Object.values(data);
             const check = dataArray.some(item => item.number == number && item.type == type.type)
             if (check) {
                 setShowToast(true);
@@ -77,7 +86,7 @@ const AddCart = ({ route }) => {
             dispath(Render(uid()))
 
             setTimeout(() => {
-                navigate.navigate('Payment', { total : total})
+                navigate.navigate('Payment', { total: total })
 
             }, 1000);
 
@@ -103,7 +112,7 @@ const AddCart = ({ route }) => {
                                     <Image source={require('../Icon/Back.png')} />
                                 </TouchableOpacity>
                                 <View style={styles.headerContent}>
-                                    <Text style={{ color: '#1A1817', fontWeight: 500, fontSize: 20 }}>Add Card</Text>
+                                    <Text style={{ color: '#1A1817', fontWeight: "500", fontSize: 20 }}>Add Card</Text>
                                 </View>
                             </View>
                         </View>
@@ -227,6 +236,9 @@ const styles = StyleSheet.create({
     },
     headerContent: {
         flexDirection: 'column'
+    },
+    body : {
+        
     },
     form: {
         gap: 15

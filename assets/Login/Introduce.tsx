@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const Introduce = () => {
     // console.log("Introduce");
-    const navigate = useNavigation();
+    const navigate = useNavigation<any>();
     const product = [
         {
             id: 1,
@@ -67,7 +67,7 @@ const Introduce = () => {
                 {renderProduct.length > 0 && renderProduct.map((item, index) => (
                     <View key={index} style={styles.bodyItem}>
                         <Image source={item.img} />
-                        <Text style={{ fontSize: 24, fontWeight: 700 }} >{item.title}</Text>
+                        <Text style={{ fontSize: 24, fontWeight: "700" }} >{item.title}</Text>
                         <Text style={{ fontSize: 16, color: '#646982', textAlign: 'center' }} >{item.description}</Text>
                         <View style={styles.slider}>
                             <View

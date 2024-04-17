@@ -7,8 +7,8 @@ import { useSelector } from 'react-redux';
 
 
 const OdersList = (props) => {
-    const user = useSelector(state => state.LoginReducer.payload.username)
-    const navigate = useNavigation()
+    const user = useSelector<any>(state => state.LoginReducer.payload.username)
+    const navigate = useNavigation<any>()
     const indexProps = props.index
 
     // get Data from database
@@ -96,12 +96,12 @@ const OdersList = (props) => {
                                 <Image style={{ width: 74, height: 63, borderRadius: 7 }} source={{ uri: product?.img }} />
                                 <View style={styles.listItem}>
                                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: 280 }}>
-                                        <Text style={{ fontWeight: 700, fontSize: 14 }}>{product?.name}</Text>
-                                        <Text style={{ fontWeight: 700, fontSize: 12, color: '#ccc' }}>{product?.id}</Text>
+                                        <Text style={{ fontWeight: '700', fontSize: 14 }}>{product?.name}</Text>
+                                        <Text style={{ fontWeight: '700', fontSize: 12, color: '#ccc' }}>{product?.id}</Text>
                                     </View>
                                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                        <Text style={{ fontWeight: 700, fontSize: 14 }}>${product?.price}   </Text>
-                                        <Text style={{ fontWeight: 700, fontSize: 12, color: '#ccc' }}>|   {indexProps == 1 ? `${product.time} - ${product.amount}` : product?.amount} Item</Text>
+                                        <Text style={{ fontWeight: '700', fontSize: 14 }}>${product?.price}   </Text>
+                                        <Text style={{ fontWeight: '700', fontSize: 12, color: '#ccc' }}>|   {indexProps == 1 ? `${product.time} - ${product.amount}` : product?.amount} Item</Text>
                                     </View>
                                 </View>
                             </View>

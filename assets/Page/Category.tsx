@@ -4,8 +4,8 @@ import { useNavigation } from '@react-navigation/native';
 const Category = () => {
 
 
-    const list = useSelector(state => state.productReducer.listStore);
-    const navigate = useNavigation();
+    const list : any = useSelector<any>(state => state.productReducer.listStore);
+    const navigate = useNavigation<any>();
     const handleClickProduct = (Data) => {
         navigate.navigate('Detail', { data: Data })
     }
@@ -30,7 +30,7 @@ const Category = () => {
                             <Text>{item.status}</Text>
                             <Text>${item.price}</Text>
                         </View>
-                        <Text style={{ fontSize: 18, fontWeight: 700 }}>{item.name}</Text>
+                        <Text style={{ fontSize: 18, fontWeight: '700' }}>{item.name}</Text>
                     </TouchableOpacity>
                 ))}
 
@@ -53,7 +53,7 @@ const Category = () => {
                 <View style={{ flexDirection: 'row', gap: 20 }}>
                     <View style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}>
                         <Image source={require('../Icon/Star 1.png')} />
-                        <Text style={{ fontWeight: 700 }}>4.7</Text>
+                        <Text style={{ fontWeight: '700' }}>4.7</Text>
                     </View>
                     <View style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}>
                         <Image source={require('../Icon/Delivery.png')} />
@@ -90,7 +90,6 @@ const styles = StyleSheet.create({
         gap: 20,
         ///
         backgroundColor: '#fff',
-        borderRadius: 10,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.3,

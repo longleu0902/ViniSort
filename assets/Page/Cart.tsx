@@ -9,13 +9,23 @@ import Toast from '../Model/Toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
+interface cart {
+    amount: number,
+    category: string,
+    id: number
+    img: string,
+    name: string
+    price: number
+    size: string
+}
 
 
 const Cart = () => {
-    const navigate = useNavigation();
+    const navigate = useNavigation<any>();
     const [total, setToltal] = useState(0)
-    const cart = useSelector(state => state.cartReducer.CartStore);
-    const user = useSelector(state => state.LoginReducer.payload.username)
+    const cart: any = useSelector<any>(state => state.cartReducer.CartStore);
+    // console.log(cart)
+    const user = useSelector<any>(state => state.LoginReducer.payload.username);
     const [edit, setEdit] = useState(false);
     const [address, setAddress] = useState("");
     const [phone, setPhone] = useState("");
@@ -52,8 +62,8 @@ const Cart = () => {
 
 
     // Decrment Item
-    const handleDecrement = (id, size) => {
-        const _cartList = [...cart]
+    const handleDecrement = (id : number, size : string) => {
+        const _cartList: any = [...cart]
         const Idx = _cartList.findIndex(item => item.id == id && item.size == size)
         _cartList[Idx] = { ..._cartList[Idx], amount: _cartList[Idx].amount - 1 }
 
@@ -65,8 +75,8 @@ const Cart = () => {
 
 
     //Increment Item
-    const handleIncrement = (id, size) => {
-        const _cartList = [...cart]
+    const handleIncrement = (id : number, size : string) => {
+        const _cartList: any = [...cart]
         const Idx = _cartList.findIndex(item => item.id == id && item.size == size)
         _cartList[Idx] = { ..._cartList[Idx], amount: _cartList[Idx].amount + 1 }
 
@@ -79,7 +89,7 @@ const Cart = () => {
 
     //remove Item
     const removeItem = async (product) => {
-        const _cartList = [...cart];
+        const _cartList : any = [...cart];
         const remove = _cartList.filter(item => item.id != product.id || item.size !== product.size);
         await AsyncStorage.setItem(`CartList`, JSON.stringify(remove));
         dispath(CartStore(remove));
@@ -134,7 +144,7 @@ const Cart = () => {
                             <Image source={require('../Icon/Back.png')} />
                         </TouchableOpacity>
                         <View style={styles.headerContent}>
-                            <Text style={{ color: '#1A1817', fontWeight: 500, fontSize: 20 }}>Cart</Text>
+                            <Text style={{ color: '#1A1817', fontWeight: '500', fontSize: 20 }}>Cart</Text>
                         </View>
                     </View>
                 </View>
@@ -148,7 +158,7 @@ const Cart = () => {
                                 <View style={styles.info}>
                                     <TouchableOpacity onPress={() => navigate.navigate("Detail", { data: item })} style={{ gap: 10 }}>
                                         <Text style={{ fontSize: 16, width: 120 }}>{item.name}</Text>
-                                        <Text style={{ fontWeight: 700, fontSize: 20 }}>${item.price * item.amount}</Text>
+                                        <Text style={{ fontWeight: "700", fontSize: 20 }}>${item.price * item.amount}</Text>
                                         <Text style={{ fontSize: 16 }}>Size : {item.size}</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity onPress={() => removeItem(item)}>
@@ -159,14 +169,14 @@ const Cart = () => {
                                     <View style={styles.count}>
                                         <Button
                                             onPress={() => handleDecrement(item.id, item.size)}
-                                            titleStyle={{ lineHeight: 17, color: '#000', fontWeight: 700 }}
+                                            titleStyle={{ lineHeight: 17, color: '#000', fontWeight: "700" }}
                                             color='#fff'>
                                             -
                                         </Button>
-                                        <Text style={{ color: '#000', fontWeight: 700 }}>{item.amount}</Text>
+                                        <Text style={{ color: '#000', fontWeight: "700" }}>{item.amount}</Text>
                                         <Button
                                             onPress={() => handleIncrement(item.id, item.size)}
-                                            titleStyle={{ lineHeight: 17, color: '#000', fontWeight: 700 }}
+                                            titleStyle={{ lineHeight: 17, color: '#000', fontWeight: "700" }}
                                             color='#fff'>
                                             +
                                         </Button>
@@ -307,7 +317,7 @@ const styles = StyleSheet.create({
     },
     infomation: {
         width: '50%',
-        flex: 'column',
+        flexDirection: 'column',
         justifyContent: 'space-around'
     },
     count: {

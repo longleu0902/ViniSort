@@ -9,7 +9,7 @@ import Animated, { useSharedValue, withSpring, useAnimatedStyle } from 'react-na
 
 
 const CallScreen = ({ route }) => {
-    const navigate = useNavigation();
+    const navigate = useNavigation<any>();
     const translateY = useSharedValue(300);
     const { data } = route.params;
     const [renderIndex, setRenderIndex] = useState(0);
@@ -26,7 +26,7 @@ const CallScreen = ({ route }) => {
 
 
     // Active animated 
-    const handleGestureStateChange = event => {
+    const handleGestureStateChange = (): void => {
         translateY.value = 100
     };
 
@@ -75,7 +75,7 @@ const CallScreen = ({ route }) => {
             >
                 <View style={styles.call}>
                     <Image style={{ width: 100, height: 100, borderRadius: 50 }} source={require('../Image/image 2182.png')} />
-                    <Text style={{ fontWeight: 700, fontSize: 25 }}>Robert Fox</Text>
+                    <Text style={{ fontWeight: "700", fontSize: 25 }}>Robert Fox</Text>
                     <Text style={{ color: '#ccc', fontSize: 16 }}>Connecting {renderView()}</Text>
                     <View style={styles.callOption}>
                         <TouchableOpacity style={styles.callItem}>

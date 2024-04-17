@@ -30,7 +30,7 @@ const Login = () => {
 
 
 
-    const navigate = useNavigation();
+    const navigate = useNavigation<any>();
 
     const handleSignIn = async () => {
         Keyboard.dismiss()
@@ -120,10 +120,10 @@ const Login = () => {
             <View style={styles.container}>
                 <View style={styles.body}>
                     <View style={{ width: 219, gap: 20 }}>
-                        <Text style={{ fontSize: 24, fontWeight: 700 }}>Just <Text style={{ color: "#F44336" }}>{!showSignUp ? 'Sign in' : 'Sign up'}</Text>
+                        <Text style={{ fontSize: 24, fontWeight: "700" }}>Just <Text style={{ color: "#F44336" }}>{!showSignUp ? 'Sign in' : 'Sign up'}</Text>
                             <Text> ,we’ll  prepar your order</Text>
                         </Text>
-                        {!showSignUp && <Text style={{ fontSize: 16, fontWeight: 500 }}>If you don’t have an account please
+                        {!showSignUp && <Text style={{ fontSize: 16, fontWeight: "500" }}>If you don’t have an account please
                             <TouchableOpacity onPress={() => setShowSignUp(true)}>
                                 <Text style={{ color: "#F44336" }}> Sign up here</Text>
                             </TouchableOpacity>
@@ -133,7 +133,7 @@ const Login = () => {
 
                     <View style={styles.form}>
                         <View style={styles.formItem}>
-                            <Text style={{ fontSize: 16, fontWeight: 600 }}>Email address</Text>
+                            <Text style={{ fontSize: 16, fontWeight: "600" }}>Email address</Text>
                             <TextInput
                                 value={email}
                                 onChangeText={(text) => setEmail(text)}
@@ -141,7 +141,7 @@ const Login = () => {
                                 placeholder='Email' />
                         </View>
                         <View style={styles.formItem}>
-                            <Text style={{ fontSize: 16, fontWeight: 600 }}>Password</Text>
+                            <Text style={{ fontSize: 16, fontWeight: "600" }}>Password</Text>
                             <TextInput
                                 value={password}
                                 onChangeText={(text) => setPassword(text)}
@@ -151,7 +151,7 @@ const Login = () => {
                         </View>
                         {showSignUp &&
                             <View style={styles.formItem}>
-                                <Text style={{ fontSize: 16, fontWeight: 600 }}>Re-password</Text>
+                                <Text style={{ fontSize: 16, fontWeight: "600" }}>Re-password</Text>
                                 <TextInput
                                     value={rePassword}
                                     onChangeText={(text) => setRePassword(text)}
@@ -176,7 +176,7 @@ const Login = () => {
                             onPress={handleSignIn}
                             buttonStyle={{ borderRadius: 12, paddingVertical: 23 }}
                             color="#E53935">
-                            <Text style={{ fontSize: 16, fontWeight: 700, color: '#fff' }}>SIGN IN</Text>
+                            <Text style={{ fontSize: 16, fontWeight: "700", color: '#fff' }}>SIGN IN</Text>
                         </Button>
                     }
 
@@ -186,13 +186,13 @@ const Login = () => {
                                 onPress={handleSignUp}
                                 buttonStyle={{ borderRadius: 12, paddingVertical: 23 }}
                                 color="#E53935">
-                                <Text style={{ fontSize: 16, fontWeight: 700, color: '#fff' }}>SIGN UP</Text>
+                                <Text style={{ fontSize: 16, fontWeight: "700", color: '#fff' }}>SIGN UP</Text>
                             </Button>
                             <Button
                                 onPress={() => setShowSignUp(false)}
                                 buttonStyle={{ borderRadius: 12, paddingVertical: 23, borderWidth:2 , borderColor:'#ccc' }}
                                 color="#fff">
-                                <Text style={{ fontSize: 16, fontWeight: 700, color: '#000'  }}>Back to SIGN IN</Text>
+                                <Text style={{ fontSize: 16, fontWeight: "700", color: '#000'  }}>Back to SIGN IN</Text>
                             </Button>
                         </>
 
@@ -272,6 +272,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: '#000',
         opacity: 0.7
+
+    },
+    form : {
 
     }
 })

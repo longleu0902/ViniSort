@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 const Search = () => {
     const defaultKeyWord = ['Burger', 'SandWich', 'Pizza', 'Pizza Hut', 'Each'];
-    const navigate = useNavigation();
+    const navigate = useNavigation<any>();
     const [keyWord, setKeyWord] = useState(defaultKeyWord);
 
     const defaultListSearch = [
@@ -52,7 +52,7 @@ const Search = () => {
                         <Image source={require('../Icon/Back.png')} />
                     </TouchableOpacity>
                     <View style={styles.headerContent}>
-                        <Text style={{ color: '#1A1817', fontWeight: 500, fontSize: 20 }}>Search</Text>
+                        <Text style={{ color: '#1A1817', fontWeight: "500", fontSize: 20 }}>Search</Text>
                     </View>
 
                 </View>
@@ -60,7 +60,7 @@ const Search = () => {
                     <View style={styles.cart}>
                         <Image source={require('../Icon/Cart.png')} />
                         <View style={styles.count}>
-                            <Text style={{ color: '#fff', fontWeight: 700 }}>3</Text>
+                            <Text style={{ color: '#fff', fontWeight: "700" }}>3</Text>
                         </View>
                     </View>
 
@@ -81,7 +81,7 @@ const Search = () => {
                         justifyContent: 'flex-start',
 
                     }}
-                    color="#fff">
+                >
                     <Image source={require('../Icon/search.png')} />
                     <TextInput placeholder='Pizza' style={{ fontSize: 14, color: '#676767', height: '100%', width: '100%' }} />
                 </View>
@@ -153,7 +153,7 @@ const Search = () => {
                                     <Image style={{ width: 120, height: 120 }} source={item.img} />
                                 </View>
                                 <Text style={{ color: '#646982' }}>{item.status}</Text>
-                                <Text style={{ fontSize: 18, fontWeight: 700 }}>{item.name}</Text>
+                                <Text style={{ fontSize: 18, fontWeight: '700' }}>{item.name}</Text>
                             </TouchableOpacity>
                         ))}
                     </View>
@@ -250,7 +250,6 @@ const styles = StyleSheet.create({
         width: 180,
         height: 110,
         // backgroundColor: '#000',
-        borderRadius: 20,
         gap: 7,
         ///
         backgroundColor: '#fff',
@@ -264,7 +263,7 @@ const styles = StyleSheet.create({
         position: 'relative',
         flexDirection: 'column-reverse',
         paddingVertical: 10,
-        marginRight:15
+        marginRight: 15
 
     },
     img: {
@@ -278,6 +277,12 @@ const styles = StyleSheet.create({
     },
     fastFood: {
         gap: 20
+    },
+    headerRight: {
+
+    },
+    tag: {
+
     }
 })
 export default Search;

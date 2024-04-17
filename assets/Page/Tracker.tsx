@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 
 
 const Tracker = () => {
-    const navigate = useNavigation();
+    const navigate = useNavigation<any>();
 
     return (
         <ScrollView showsVerticalScrollIndicator={false}>

@@ -94,7 +94,7 @@ const ChangePassword = () => {
                     <View style={styles.form}>
 
                         <View style={styles.formItem}>
-                            <Text style={{ fontSize: 16, fontWeight: 600 }}>Password</Text>
+                            <Text style={{ fontSize: 16, fontWeight: '600' }}>Password</Text>
                             <TextInput
                                 value={password}
                                 onChangeText={(text) => setPassword(text)}
@@ -103,7 +103,7 @@ const ChangePassword = () => {
                                 placeholder='Password' />
                         </View>
                         <View style={styles.formItem}>
-                            <Text style={{ fontSize: 16, fontWeight: 600 }}>New Password</Text>
+                            <Text style={{ fontSize: 16, fontWeight: '600' }}>New Password</Text>
                             <TextInput
                                 value={newPassword}
                                 onChangeText={(text) => setNewPassword(text)}
@@ -112,7 +112,7 @@ const ChangePassword = () => {
                                 placeholder='New Password' />
                         </View>
                         <View style={styles.formItem}>
-                            <Text style={{ fontSize: 16, fontWeight: 600 }}>Re-New password</Text>
+                            <Text style={{ fontSize: 16, fontWeight: '600' }}>Re-New password</Text>
                             <TextInput
                                 value={rePassword}
                                 onChangeText={(text) => setRePassword(text)}
@@ -126,7 +126,7 @@ const ChangePassword = () => {
                         onPress={handaleUpdate}
                         buttonStyle={{ borderRadius: 12, paddingVertical: 23 }}
                         color="#E53935">
-                        <Text style={{ fontSize: 16, fontWeight: 700, color: '#fff' }}>Update</Text>
+                        <Text style={{ fontSize: 16, fontWeight: '700', color: '#fff' }}>Update</Text>
                     </Button>
                 </View>
             </View>
@@ -180,6 +180,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: '#000',
         opacity: 0.7,
+
+    },
+    form : {
 
     }
 })

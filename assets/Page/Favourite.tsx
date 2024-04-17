@@ -6,9 +6,9 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const Favouriter = () => {
 
-    const navigate = useNavigation();
+    const navigate = useNavigation<any>();
 
-    const list = useSelector(state => state.favouriterReduce.favouriterFood)
+    const list : any = useSelector<any>(state => state.favouriterReduce.favouriterFood)
     return (
         <View style={styles.container}>
 
@@ -18,7 +18,7 @@ const Favouriter = () => {
                         <Image source={require('../Icon/Back.png')} />
                     </TouchableOpacity>
                     <View style={styles.headerContent}>
-                        <Text style={{ color: '#1A1817', fontWeight: 500, fontSize: 20 }}>Favourite Food</Text>
+                        <Text style={{ color: '#1A1817', fontWeight: '500', fontSize: 20 }}>Favourite Food</Text>
                     </View>
                 </View>
 

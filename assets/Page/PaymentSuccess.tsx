@@ -10,11 +10,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const PaymentSuccess = ({ route }) => {
-    const navigate = useNavigation();
+    const navigate = useNavigation<any>();
     const dispath = useDispatch();
     const getData = async () => {
         try {
-            const arr = [];
+            const arr : any = [];
             dispath(CartStore(arr))
             await AsyncStorage.setItem(`CartList`, JSON.stringify(arr));
 
@@ -37,7 +37,7 @@ const PaymentSuccess = ({ route }) => {
             </View>
             <View style={styles.body}>
                 <Image style={{ marginBottom: 20 }} source={require('../Icon/success.png')} />
-                <Text style={{ fontSize: 24, fontWeight: 700 }}>Congratulations!</Text>
+                <Text style={{ fontSize: 24, fontWeight: "700" }}>Congratulations!</Text>
                 <Text style={{ color: '#B0A9A2', fontSize: 16 }}>You successfully maked a payment, </Text>
                 <Text style={{ color: '#B0A9A2', fontSize: 16 }}>enjoy our service!!</Text>
             </View>

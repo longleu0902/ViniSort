@@ -8,10 +8,10 @@ import { uid } from 'uid';
 
 
 const Restaurant = ({ route }) => {
-    const navigate = useNavigation();
+    const navigate = useNavigation<any>();
     // const { data } = route.params;
     const dispath = useDispatch();
-    const cart = useSelector(state => state.cartReducer.CartStore);
+    const cart: any = useSelector<any>(state => state.cartReducer.CartStore);
     const [favouriter, setFavouriter] = useState(false);
 
     const defaultBtnGroup = [
@@ -94,7 +94,7 @@ const Restaurant = ({ route }) => {
                         <View style={{ flexDirection: 'row', gap: 50 }}>
                             <View style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}>
                                 <Image source={require('../Icon/Star 1.png')} />
-                                <Text style={{ fontWeight: 700 }}>4.7</Text>
+                                <Text style={{ fontWeight: "700" }}>4.7</Text>
                             </View>
                             <View style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}>
                                 <Image source={require('../Icon/Delivery.png')} />
@@ -105,7 +105,7 @@ const Restaurant = ({ route }) => {
                                 <Text >20.min</Text>
                             </View>
                         </View>
-                        <Text style={{ fontSize: 20, fontWeight: 700 }}>Jollor Rice & Chicken</Text>
+                        <Text style={{ fontSize: 20, fontWeight: "700" }}>Jollor Rice & Chicken</Text>
                         <Text style={{ fontSize: 14, color: '#A0A5BA' }}>Maecenas sed diam eget risus varius blandit sit amet non magna. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.</Text>
                         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                             <View style={styles.selectTag}>
@@ -142,18 +142,18 @@ const Restaurant = ({ route }) => {
                                             <View style={styles.img}>
                                                 <Image style={{ width: 120, height: 120 }} source={item.img} />
                                             </View>
-                                            <View style={{flexDirection:"row",justifyContent:'space-between', alignItems:'center'}}>
-                                                <Text style={{fontSize:16 , fontWeight:700}}>$40</Text>
+                                            <View style={{ flexDirection: "row", justifyContent: 'space-between', alignItems: 'center' }}>
+                                                <Text style={{ fontSize: 16, fontWeight: "700" }}>$40</Text>
                                                 <TouchableOpacity
                                                     onPress={(prev) => setFavouriter(prev => !prev)}
-                                                    style={{width:30 , height:30,borderRadius:50,backgroundColor:'#F58D1D',alignItems:'center'}}>
-                                                    <Text style={{ fontSize: 20, lineHeight:30 , color : '#fff', fontWeight:700}}>+</Text>
-                                                    
+                                                    style={{ width: 30, height: 30, borderRadius: 50, backgroundColor: '#F58D1D', alignItems: 'center' }}>
+                                                    <Text style={{ fontSize: 20, lineHeight: 30, color: '#fff', fontWeight: "700" }}>+</Text>
+
                                                 </TouchableOpacity>
                                             </View>
                                             <Text style={{ color: '#646982' }}>{item.status}</Text>
-                                            <Text style={{ fontSize: 18, fontWeight: 700 }}>{item.name}</Text>
-                             
+                                            <Text style={{ fontSize: 18, fontWeight: "700" }}>{item.name}</Text>
+
 
                                         </View>
                                     ))}
@@ -251,8 +251,6 @@ const styles = StyleSheet.create({
     listCategory: {
         width: 180,
         height: 150,
-        // backgroundColor: '#000',
-        borderRadius: 20,
         gap: 7,
         ///
         backgroundColor: '#fff',

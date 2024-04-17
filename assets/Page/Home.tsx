@@ -10,20 +10,15 @@ import { CartStore } from '../Redux/CartReducer';
 
 
 
-
-
-
-
-
 const Home = () => {
-    const cart = useSelector((state) => state.cartReducer.CartStore);
+    const cart : any = useSelector<any>((state) => state.cartReducer.CartStore);
     const dispath = useDispatch();
-    const navigate = useNavigation();
+    const navigate = useNavigation<any>();
 
     // get data data , cartlist from asyncStorage and update state redux
     const getData = async () => {
         try {
-            const arr = []
+            const arr : any = []
             const jsonValue = await AsyncStorage.getItem(`data`);
             const CartList = await AsyncStorage.getItem(`CartList`);
             dispath(favouriterFood(JSON.parse(jsonValue)))
