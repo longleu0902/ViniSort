@@ -4,7 +4,6 @@ import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CartStore } from '../Redux/CartReducer';
-import { text } from '@fortawesome/fontawesome-svg-core';
 import { fethData, UpdateData, fethDataValue } from '../service/getDataUser';
 import Toast from '../Model/Toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -23,9 +22,9 @@ const Cart = () => {
     const [showToast, setShowToast] = useState(false);
     const [toast, setToast] = useState('');
 
-    // console.log("check cart", cart);
     const dispath = useDispatch();
 
+    // Get Data choose address and number phone
     const getDataUser = async () => {
         const data = await fethDataValue(user)
         if (data && data.address && data.phone) {
@@ -34,15 +33,15 @@ const Cart = () => {
         }
     }
 
+    // Total all price producy
     const getTotal = () => {
-        if(cart !== null){
-            const _cart =  [...cart];
+        if (cart !== null) {
+            const _cart = [...cart];
             let toltal = _cart.reduce((a, b) => {
                 return Number(a) + Number(b.price) * Number(b.amount)
             }, 0)
             setToltal(toltal)
         }
-   
 
     }
     useEffect(() => {
@@ -51,6 +50,8 @@ const Cart = () => {
 
     }, [cart]);
 
+
+    // Decrment Item
     const handleDecrement = (id, size) => {
         const _cartList = [...cart]
         const Idx = _cartList.findIndex(item => item.id == id && item.size == size)
@@ -59,10 +60,11 @@ const Cart = () => {
         if (_cartList[Idx].amount == 0) {
             _cartList[Idx].amount = 1
         }
-        // console.log("check cartlist" , _cartList)
         dispath(CartStore(_cartList));
     }
 
+
+    //Increment Item
     const handleIncrement = (id, size) => {
         const _cartList = [...cart]
         const Idx = _cartList.findIndex(item => item.id == id && item.size == size)
@@ -71,10 +73,11 @@ const Cart = () => {
         if (_cartList[Idx].amount == 0) {
             _cartList[Idx].amount = 1
         }
-        // console.log("check cartlist" , _cartList)
         dispath(CartStore(_cartList));
     }
 
+
+    //remove Item
     const removeItem = async (product) => {
         const _cartList = [...cart];
         const remove = _cartList.filter(item => item.id != product.id || item.size !== product.size);
@@ -85,8 +88,9 @@ const Cart = () => {
 
     }
 
-    const handleMovePayment = () => {
 
+    // Buy Item and move payment 
+    const handleMovePayment = () => {
         if (total == 0) {
             setShowToast(true)
             setToast("You don't have any orders")
@@ -105,6 +109,7 @@ const Cart = () => {
         navigate.navigate('Payment', { total: total, address: address, phone: phone })
     }
 
+    // Change to address and phone
     const handleSave = async () => {
         const userID = await fethData(user)
         await UpdateData(userID, {
@@ -113,6 +118,8 @@ const Cart = () => {
         })
         setEdit(prev => !prev)
     }
+
+    //Change to addess and phone
     const handleOpenEdit = () => {
         setEdit(prev => !prev)
     }

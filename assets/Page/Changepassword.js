@@ -18,21 +18,13 @@ import Toast from '../Model/Toast';
 
 
 const ChangePassword = () => {
-    const dispath = useDispatch();
     const [newPassword, setNewPassword] = useState('');
     const [password, setPassword] = useState('');
     const [rePassword, setRePassword] = useState('')
-
     const [loading, setLoading] = useState(false)
-
-
-
     const [toast, showToast] = useState(false);
     const [title, setTitle] = useState('')
 
-
-
-    const navigate = useNavigation();
 
 
 

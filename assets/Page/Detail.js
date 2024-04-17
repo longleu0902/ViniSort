@@ -14,9 +14,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const Detail = ({ route }) => {
 
     const favouriterStore = useSelector(state => state.favouriterReduce.favouriterFood)
-    // console.log("check favouriterStore", typeof favouriterStore)
     const navigate = useNavigation();
-    // const [data , setData] = useState({})
     const { data } = route.params;
     const translateY = useSharedValue(0);
     const translateX = useSharedValue(0);
@@ -25,6 +23,8 @@ const Detail = ({ route }) => {
     const [opacityShow, setOpacityShow] = useState(false)
     const [toastSize, setToastSize] = useState(false)
 
+
+    //  style animated add to Cart
     const animatedStyles = useAnimatedStyle(() => ({
         transform: [
             {
@@ -59,21 +59,25 @@ const Detail = ({ route }) => {
 
 
     const dispath = useDispatch();
-    const cart = useSelector(state => state.cartReducer.CartStore); /// thay doi store
+    const cart = useSelector(state => state.cartReducer.CartStore); 
 
-    // console.log(data);
 
     const [favouriter, setFavouriter] = useState(false);
     const [amount, setAmount] = useState(1);
     const [price, setPrice] = useState(data.price);
 
-    const handleMoveCart =  () => {
+
+    // Add + navigate cart
+    const handleMoveCart = () => {
+
+        // Check valid size
         const filterSize = checkBtn.filter((item => item.status == true));
         if (filterSize.length == 0) {
             setToastSize(true)
             return;
         }
 
+        // Animated Item
         const duration = 2000
         const easing = Easing.bezier(0.25, -0.5, 0.25, 1);
         setOpacityShow(true);
@@ -81,6 +85,8 @@ const Detail = ({ route }) => {
         translateX.value = 300;
         translateY.value = -250;
 
+
+        // Hold wait animated
         setTimeout(() => {
             setOpacityShow(false)
             translateX.value = 0;
@@ -88,13 +94,11 @@ const Detail = ({ route }) => {
         }, 1700)
 
 
+        // Logic add cart
         setTimeout(async () => {
             const filterSize = checkBtn.filter((item => item.status == true));
-            // console.log('check filter', filterSize)
             const _cart = [...cart];
             const idxCart = _cart.findIndex((item) => item.id == data.id && item.size == filterSize[0]?.size);
-            // console.log(idxCart)
-            // console.log(data.id)
             if (filterSize.length == 0) {
                 setToastSize(true)
                 return;
@@ -106,13 +110,11 @@ const Detail = ({ route }) => {
                 price: data.price,
                 amount: +amount,
                 size: filterSize[0]?.size || '10',
-                category : data.category
+                category: data.category
             }
 
             if (idxCart == -1) {
                 _cart.push(arr)
-                // dispath(CartStore(arr))
-
             } else {
                 _cart[idxCart] = { ..._cart[idxCart], ...arr, amount: _cart[idxCart].amount + amount }
             }
@@ -123,6 +125,8 @@ const Detail = ({ route }) => {
 
     }
 
+
+    // default size
     const defaultBtnGroup = [
         {
             id: 1,
@@ -148,20 +152,23 @@ const Detail = ({ route }) => {
         arr[index]['status'] = true;
         setCheckBtn(arr)
     }
-    // console.log("check btn" , checkBtn)
 
+    // Increment Item
     const handleIncrement = () => {
         let a = amount + 1
         setAmount(a);
         setPrice(a * data.price)
     }
+
+    // Decrement Item
     const handleDecrement = () => {
         let a = amount - 1
-        if (a < 0) return 1;
+        if (a < 1) return 1;
         setAmount(a)
         setPrice(a * data.price)
     }
 
+    // Logic add Item to AsyncStoreage
     const storeData = async (value) => {
         try {
             await AsyncStorage.setItem(`Favouriter${data.id}`, JSON.stringify(value));
@@ -183,19 +190,19 @@ const Detail = ({ route }) => {
             setFavouriter(JSON.parse(jsonValue))
             return jsonValue != null ? JSON.parse(jsonValue) : false;
         } catch (e) {
-            //error
+            console.log(e)
         }
     };
+
+
     useEffect(() => {
         getData()
     }, [])
 
+    // Add favouriter
     const handleClickFavourite = () => {
         setFavouriter(prev => !prev)
-        console.log(favouriter)
-
     }
-
     const handleAddFavourtive = (data) => {
         if (favouriter) {
             const filter = favouriterStore.filter((item) => item.id !== data.id)

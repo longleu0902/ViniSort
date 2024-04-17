@@ -28,22 +28,7 @@ const Payment = ({ route }) => {
     const [renderCash, setRenderCash] = useState([]);
     const [showToast, setShowToast] = useState(false);
     const [toast, setToast] = useState('');
-    const showModal = () => {
-        setShow(prev => !prev);
-        // if(!defaultCash)
-        const _renderCash = [...defaultCash];
-        const combinedList = _renderCash.map(item => {
-            const correspondingImg = defaultValue.find(imgItem => imgItem.type === item.type);
-            return {
-                ...item,
-                img: correspondingImg ? correspondingImg.img : null,
-                status: true
-            };
-        });
-        setRenderCash([...combinedList])
-    }
-
-    // console.log("chcek renderCash",renderCash)
+    const [defaultCash, setDefaultCash] = useState([]);
     const defaultValue = [
         {
             id: 1,
@@ -74,10 +59,26 @@ const Payment = ({ route }) => {
         },
 
     ]
-    const [defaultCash, setDefaultCash] = useState([])
+
+    const showModal = () => {
+        setShow(prev => !prev);
+
+        // match defaultCash and defaultValue of the same type and get that tag icon
+        const _renderCash = [...defaultCash];
+        const combinedList = _renderCash.map(item => {
+            const correspondingImg = defaultValue.find(imgItem => imgItem.type === item.type);
+            return {
+                ...item,
+                img: correspondingImg ? correspondingImg.img : null,
+                status: true
+            };
+        });
+        setRenderCash([...combinedList])
+    }
+
+    // get data cash from database
     const getData = async () => {
         const data = await fethDataCard();
-        // console.log(data)
         if (data == undefined) return;
         setDefaultCash(data)
 
@@ -85,9 +86,6 @@ const Payment = ({ route }) => {
     useEffect(() => {
         getData()
     }, [renderComponet])
-    // useFocusEffect(() => {
-    //     getData();
-    // });
 
 
 
@@ -144,20 +142,20 @@ const Payment = ({ route }) => {
     };
 
     const handleConfirm = async () => {
-        if(total == 0 ) {
+        if (total == 0) {
             setToast("You don't have oders !!!");
             setShowToast(true)
-            return ;
-        } 
-        if(address == '' ) {
+            return;
+        }
+        if (address == '') {
             setToast("Please give me the address !!!");
             setShowToast(true)
-            return ;
+            return;
         }
-        if(phone == '' ) {
+        if (phone == '') {
             setToast("Please give me the number phone !!!");
             setShowToast(true)
-            return ;
+            return;
         }
         if (listCash.length > 0) {
             const cartWithId = cart.map((item, index) => {
@@ -181,7 +179,7 @@ const Payment = ({ route }) => {
                     address: address,
                     total: data.total + total,
                     phone: phone,
-                    cart: data.cart ? [...data.cart , ...cartWithId] :[...cartWithId]
+                    cart: data.cart ? [...data.cart, ...cartWithId] : [...cartWithId]
 
                 })
             }

@@ -12,12 +12,7 @@ const Restaurant = ({ route }) => {
     // const { data } = route.params;
     const dispath = useDispatch();
     const cart = useSelector(state => state.cartReducer.CartStore);
-
-    // console.log(data);
-
     const [favouriter, setFavouriter] = useState(false);
-    const [amount, setAmount] = useState(1);
-    // const [price, setPrice] = useState(data.price);
 
     const defaultBtnGroup = [
         {

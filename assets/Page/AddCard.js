@@ -17,21 +17,12 @@ const AddCart = ({ route }) => {
     const { type } = route.params;
     const [showToast, setShowToast] = useState(false);
     const [title, setTitle] = useState('')
-
-    const renderPayment = uid()
-
-
-    // console.log(total)
-
-    // console.log(type)
-
-
-
     const [name, setName] = useState('')
     const [number, setNumber] = useState('')
     const [day, setDay] = useState('')
     const [cvc, setCvc] = useState('')
 
+    
     const validForm = (name, number, day, cvc) => {
         if (!name || !number || !day || !cvc) {
             setShowToast(true)
@@ -41,6 +32,8 @@ const AddCart = ({ route }) => {
         return true
     }
 
+
+    // Check exsits card from database
     const getCard = async () => {
         try {
             const reponse = await get(ref(database, 'cards'))
@@ -53,7 +46,6 @@ const AddCart = ({ route }) => {
                 setTitle('Your card number is exsit !!')
             }
             return check
-
 
         } catch (err) {
             console.error(err)

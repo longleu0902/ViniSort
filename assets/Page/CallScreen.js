@@ -16,7 +16,6 @@ const CallScreen = ({ route }) => {
 
     useEffect(() => {
         handleGestureStateChange();
-
     }, [])
 
     useEffect(() => {
@@ -25,14 +24,20 @@ const CallScreen = ({ route }) => {
         }, 1000)
     }, [renderIndex])
 
+
+    // Active animated 
     const handleGestureStateChange = event => {
         translateY.value = 100
     };
 
+
+    //Style animated 
     const animatedStyles = useAnimatedStyle(() => ({
         transform: [{ translateY: withSpring(translateY.value, { overshootClamping: false }) }],
     }));
 
+
+    //Render .... after loading
     const renderView = () => {
         let view = [];
         for (let i = 0; i < renderIndex; i++) {

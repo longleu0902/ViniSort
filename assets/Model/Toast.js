@@ -16,9 +16,6 @@ const Toast = (props) => {
     const handleClose = () => {
         props.show(false)
     }
-
-    //Sorry,account or password is incorrect !
-    //Please enter in full
     return (
         <View style={styles.container}>
             <View style={styles.background}>

@@ -4,11 +4,27 @@ import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CartStore } from '../Redux/CartReducer';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 
 const PaymentSuccess = ({ route }) => {
     const navigate = useNavigation();
+    const dispath = useDispatch();
+    const getData = async () => {
+        try {
+            const arr = [];
+            dispath(CartStore(arr))
+            await AsyncStorage.setItem(`CartList`, JSON.stringify(arr));
+
+        } catch (e) {
+            console.error(e)
+        }
+    };
+    useEffect(() => {
+        getData();
+    }, [])
 
     return (
         <View style={styles.container}>
@@ -20,7 +36,7 @@ const PaymentSuccess = ({ route }) => {
                 </View>
             </View>
             <View style={styles.body}>
-                <Image style={{marginBottom:20}} source={require('../Icon/success.png')} />
+                <Image style={{ marginBottom: 20 }} source={require('../Icon/success.png')} />
                 <Text style={{ fontSize: 24, fontWeight: 700 }}>Congratulations!</Text>
                 <Text style={{ color: '#B0A9A2', fontSize: 16 }}>You successfully maked a payment, </Text>
                 <Text style={{ color: '#B0A9A2', fontSize: 16 }}>enjoy our service!!</Text>

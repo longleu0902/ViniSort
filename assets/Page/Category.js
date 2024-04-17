@@ -10,34 +10,6 @@ const Category = () => {
         navigate.navigate('Detail', { data: Data })
     }
 
-    // const list = [   
-    //     {
-    //         id: 1,
-    //         img: require('../Image/pizza.png'),
-    //         name: 'Pizza',
-    //         status: 'Starting',
-    //         price: '70'
-
-    //     },
-    //     {
-    //         id: 2,
-    //         img: require('../Image/burger.png'),
-    //         name: 'Burger',
-    //         status: 'Starting',
-    //         price: '50'
-
-    //     },
-    //     {
-    //         id: 3,
-    //         img: require('../Image/pizza.png'),
-    //         name: 'Pizza',
-    //         status: 'Starting',
-    //         price: '70'
-
-    //     },
-    // ]
-
-
     return (
         <View style={styles.container}>
             <View style={styles.header}>

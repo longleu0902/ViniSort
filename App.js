@@ -23,8 +23,3 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
-
-
-// react-navigation/native
-
-// react-navigation/native-stack

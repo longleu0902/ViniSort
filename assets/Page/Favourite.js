@@ -9,7 +9,6 @@ const Favouriter = () => {
     const navigate = useNavigation();
 
     const list = useSelector(state => state.favouriterReduce.favouriterFood)
-    // console.log("check favouriterStore", list)
     return (
         <View style={styles.container}>
 

@@ -5,22 +5,15 @@ import { database } from '../config/firebaseConfig'
 const fethData = async (username) => {
     try {
         const data = await get(ref(database, 'users'))
-        // const data = await get(child(ref(database), 'users').key);
-
         const reponse = data.val();
-        // const dataArray = Object.values(reponse); 
         for (let key in reponse) {
             if (reponse[key]['username'] == username) {
                 return key
             }
-
         }
-
     } catch (err) {
         console.log(err)
-
     }
-
 }
 
 const UpdateData = async (uid, data) => {
@@ -36,10 +29,7 @@ const UpdateData = async (uid, data) => {
 const fethDataValue = async (username) => {
     try {
         const data = await get(ref(database, 'users'))
-        // const data = await get(child(ref(database), 'users').key);
-
         const reponse = data.val();
-        // const dataArray = Object.values(reponse); 
         for (let key in reponse) {
             if (reponse[key]['username'] == username) {
                 return reponse[key]
@@ -59,10 +49,8 @@ const fethDataCard = async () => {
         const data = await get(ref(database, 'cards'))
         const dataArray = Object.values(data.val());
         return dataArray
-
-
     } catch (err) {
-        // console.error(err)
+        console.error(err)
     }
 }
 export { fethData, UpdateData, fethDataValue, fethDataCard }

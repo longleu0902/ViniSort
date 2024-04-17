@@ -10,26 +10,28 @@ const OdersList = (props) => {
     const user = useSelector(state => state.LoginReducer.payload.username)
     const navigate = useNavigation()
     const indexProps = props.index
+
+    // get Data from database
     const getData = async () => {
         const req = await fethDataValue(user)
-        const key = await fethDataKey(user);
         if (req && req.cart) {
             props.setList([...req.cart])
             props.setProductData({ ...req })
         }else{
             props.setList([])
-
         }
     }
 
 
 
-    const handleClick = (product) => {
 
+    const handleClick = (product) => {
         navigate.navigate("TrackerOder", { data: product })
 
     }
 
+
+    // Open model delete
     const handleCancel = async (product) => {
         props.show(true);
         props.toast(`Do you have cancel ${product.name} orders ?`)
@@ -69,8 +71,9 @@ const OdersList = (props) => {
             status: 'Canceled'
         },
     ]
-    useEffect(() => {
 
+    
+    useEffect(() => {
         if (indexProps == 0) {
             getData();
         } else {

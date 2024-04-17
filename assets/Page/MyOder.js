@@ -16,35 +16,35 @@ const MyOders = () => {
 
     const navigate = useNavigation();
     const [index, setIndex] = useState(0);
+
+    //Props Toast Model
     const [showToast, setShowToast] = useState(false);
     const [toast, setToast] = useState('');
-    const [cancel, setCancel] = useState(false);
-    const [list, setList] = useState([]);
 
+
+    // Props => OdersList
+    const [list, setList] = useState([]);
     const [productRemove, setProductRemove] = useState({});
     const [productData, setProductData] = useState({})
     const [render, setRender] = useState(0)
 
+
+    // confirm delete oders
     const handleClickYes = () => {
         handleConfimCancel()
         setShowToast(false)
     }
 
+    //Logic delete oders
     const handleConfimCancel = async () => {
         const remove = list.filter(item => item.id !== productRemove.id)
         const removePrice = list.filter(item => item.id == productRemove.id)
         const key = await fethDataKey(user);
-        // console.log("check remove", remove)
-        // console.log("check key ", key)
         let _product = { ...productData }
         _product.cart = remove
         _product.total = Number(_product.total) - Number(removePrice[0].price * removePrice[0].amount)
         await UpdateData(key, _product)
         setRender(render + 1)
-        // console.log("ok",productRemove )
-        // console.log("ok", _product)
-
-        // console.log("ok1",productData )
     }
 
 

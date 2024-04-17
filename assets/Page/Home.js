@@ -19,23 +19,21 @@ const Home = () => {
     const cart = useSelector((state) => state.cartReducer.CartStore);
     const dispath = useDispatch();
     const navigate = useNavigation();
+
+    // get data data , cartlist from asyncStorage and update state redux
     const getData = async () => {
         try {
             const arr = []
             const jsonValue = await AsyncStorage.getItem(`data`);
             const CartList = await AsyncStorage.getItem(`CartList`);
-
-            // console.log("CartList",JSON.parse(CartList) )
-
             dispath(favouriterFood(JSON.parse(jsonValue)))
             if (CartList !== null) {
                 dispath(CartStore(JSON.parse(CartList)))
             } else {
                 dispath(CartStore(arr))
             }
-            // console.log("check data", jsonValue)
         } catch (e) {
-            //error
+            console.error(e)
         }
     };
     useEffect(() => {
